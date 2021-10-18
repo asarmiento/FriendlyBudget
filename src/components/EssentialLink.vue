@@ -1,24 +1,16 @@
 <template>
-  <q-router-tab
-    exact
-    tag="a"
-  :icon="icon"
-    :to="link"
-  >
-    <q-item-section
-      v-if="icon"
-      avatar
-    >
-      <q-icon :name="icon" />
-    </q-item-section>
+  <div class="q-pa-md" style="max-width: 350px">
+    <q-list >
+      <q-item clickable v-ripple :to="link">
+        <q-item-section avatar>
+          <q-icon color="primary" :name="icon" />
+        </q-item-section>
 
-    <q-item-section>
-      <q-item-label>{{ title }}</q-item-label>
-      <q-item-label caption>
-        {{ caption }}
-      </q-item-label>
-    </q-item-section>
-  </q-router-tab>
+        <q-item-section >{{ title }}</q-item-section>
+      </q-item>
+
+    </q-list>
+  </div>
 </template>
 
 <script>

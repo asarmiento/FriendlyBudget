@@ -1,4 +1,4 @@
-# FriendlyBudget (friendly_budget)
+# FriendlyPosFill (friendly_pos_fill)
 
 Esta aplicación estamos creando para poder realizar un presupuesto familiar básico para cualquier familia 
 

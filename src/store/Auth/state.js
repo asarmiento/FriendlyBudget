@@ -1,5 +1,8 @@
 export default function () {
   return {
-    token: null
+    token: null,
+    tokenExpiration: null,
+    timer: null,
+    user: null
   }
 }

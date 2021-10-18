@@ -1,8 +1,8 @@
 {
-  "name": "friendly_budget",
+  "name": "friendly_pos_fill",
   "version": "0.0.1",
   "description": "Esta aplicación estamos creando para poder realizar un presupuesto familiar básico para cualquier familia ",
-  "productName": "FriendlyBudget",
+  "productName": "FriendlyPosFill",
   "author": "Anwar Sarmiento <asarmiento@sistemasamigables.com>",
   "private": true,
   "scripts": {

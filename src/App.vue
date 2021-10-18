@@ -4,6 +4,9 @@
 <script>
 import { defineComponent } from 'vue'
 export default defineComponent({
-  name: 'App'
+  name: 'App',
+  mounted () {
+    this.$store.dispatch('authModules/trySessionAction')
+  }
 })
 </script>

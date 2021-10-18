@@ -16,7 +16,7 @@ module.exports = configure(function (ctx) {
     supportTS: false,
 
     // https://v2.quasar.dev/quasar-cli/prefetch-feature
-    // preFetch: true,
+    preFetch: true,
 
     // app boot file (/src/boot)
     // --> boot files are part of "main.js"
@@ -39,7 +39,7 @@ module.exports = configure(function (ctx) {
       // 'themify',
       // 'line-awesome',
       // 'roboto-font-latin-ext', // this or either 'roboto-font', NEVER both!
-
+      'fontawesome-v5',
       'roboto-font', // optional, you are not bound to it
       'material-icons' // optional, you are not bound to it
     ],
@@ -94,7 +94,13 @@ module.exports = configure(function (ctx) {
       // directives: [],
 
       // Quasar plugins
-      plugins: []
+      plugins: [
+        'LocalStorage',
+        'SessionStorage',
+        'AppFullscreen',
+        'Dialog',
+        'Notify'
+      ]
     },
 
     // animations: 'all', // --- includes all animations
@@ -138,8 +144,8 @@ module.exports = configure(function (ctx) {
       },
 
       manifest: {
-        name: 'FriendlyBudget',
-        short_name: 'FriendlyBudget',
+        name: 'FriendlyPosFill',
+        short_name: 'FriendlyPosFill',
         description: 'Esta aplicación estamos creando para poder realizar un presupuesto familiar básico para cualquier familia ',
         display: 'standalone',
         orientation: 'portrait',
@@ -205,7 +211,7 @@ module.exports = configure(function (ctx) {
       builder: {
         // https://www.electron.build/configuration/configuration
 
-        appId: 'friendly_budget'
+        appId: 'friendly_pos_fill'
       },
 
       // "chain" is a webpack-chain object https://github.com/neutrinojs/webpack-chain
