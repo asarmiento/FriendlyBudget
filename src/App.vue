@@ -10,3 +10,4 @@ export default defineComponent({
   }
 })
 </script>
+<style src="./css/style.scss" lang="scss"></style>

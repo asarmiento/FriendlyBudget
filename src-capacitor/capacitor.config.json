@@ -1,0 +1,7 @@
+{
+  "appId": "? What is the Capacitor app id? (org.capacitor.quasar.app)friendlystore",
+  "appName": "FriendlyPosFill",
+  "bundledWebRuntime": false,
+  "npmClient": "yarn",
+  "webDir": "www"
+}

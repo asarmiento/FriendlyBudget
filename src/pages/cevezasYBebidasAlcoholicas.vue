@@ -2,7 +2,7 @@
   <q-page >
     <div class="q-pa-md">
       <div class="q-stepper--bordered">
-        <lists-products menu="ALIMENTOS"></lists-products>
+        <lists-products menu="CERVEZAS Y BEBIDAS ALCOHOLICAS"></lists-products>
       </div>
     </div>
   </q-page>
@@ -12,7 +12,7 @@
 import { defineComponent } from 'vue'
 import listsProducts from '../components/ListsProducts.vue'
 export default defineComponent({
-  name: 'PageIndex',
+  name: 'CervezasYBebidasAlcoholicas',
   components: { listsProducts }
 })
 </script>

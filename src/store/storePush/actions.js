@@ -11,13 +11,13 @@ export function addProductAction (context, payload) {
     if (pasas.length === 0) {
       lists.push(payload)
     }
-    console.log('probando', pasas, lists)
     products = lists
   } else {
     products = []
     products.push(payload)
   }
   localStorage.setItem('productsCard', JSON.stringify(products))
+  console.log('probando', products)
   context.commit('addProductMutation', {
     products: products
   })
@@ -35,14 +35,36 @@ export function updateProductAction (context, payload) {
     if (pasas.length === 0) {
       lists.push(payload)
     }
-    console.log('probando', pasas, lists)
     products = lists
   } else {
     products = []
     products.push(payload)
   }
   localStorage.setItem('productsCard', JSON.stringify(products))
+  console.log('probando1', products)
+
   context.commit('addProductMutation', {
     products: products
+  })
+}
+export function setProduct (context, payload) {
+  context.commit('productMuttation', {
+    product: payload
+  })
+}
+export function setUpdateState (context) {
+  const products = localStorage.getItem('productsCard')
+  if (products) {
+    const listsProduct = JSON.parse(products)
+    console.log('acction', listsProduct)
+    context.commit('addProductMutation', {
+      product: listsProduct
+    })
+  }
+}
+export function deleteProductAction (context) {
+  localStorage.setItem('productsCard', [])
+  context.commit('addProductMutation', {
+    product: []
   })
 }

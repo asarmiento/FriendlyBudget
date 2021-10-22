@@ -1,27 +1,25 @@
 <template>
-  <q-page>
-    <div class="q-pa-lg row items-start q-gutter-lg">
-      <q-card class="my-card bg-grey-1 card-products">
-        <q-card-section style="height: 350px; width: 100%">
-          <img :src="product.url_img" class="responsive" srcset/>
-        </q-card-section>
+    <div class="row justify-center box-product-unit">
+      <q-card class=" no-shadow col-md-4  ">
+        <q-img :src="product.url_img" class=" img-unit "   style="height: 280px; max-width: 300px" />
       </q-card>
       <q-separator vertical/>
-      <q-card flat div style="width: 400px; display: flex; justify-content: center; align-items: center;">
+      <div  style="width: 17%; display: flex; justify-content: center; align-items: center; margin-top: -59px; margin-right: 15px; margin-left: 10px">
         <div class="row">
-          <q-card-sectio class="col-md-12"><h4>{{product.description}}</h4></q-card-sectio>
-          <q-card-sectio class="col-md-12 text-center">
-            <label style="font-size: 24px"><i>Precio*:</i> <strong> ₡{{money}}</strong></label>
-          </q-card-sectio>
-          <q-card-sectio class="col-md-12 text-center">
-            <div class=" col-md-12 text-center form-group">
-              <label>SELECCIONE PRESENTACIÓN</label>
-              <q-select rounded outlined v-model="metho" :options="options"/>
+          <q-card-section class="col-md-12 desription-product">{{product.description}}</q-card-section>
+          <q-card-section class="col-md-12 text-center">
+            <q-item-label style="font-size: 18px; padding: 3px"><i>Precio Caja*:</i> <strong class="price-box"> ₡{{boxMoney}}</strong></q-item-label>
+            <q-item-label style="font-size: 18px; padding: 3px"><i>Precio Unitario*:</i> <strong class="price-unite"> ₡{{money}} </strong></q-item-label>
+          </q-card-section>
+          <q-card-sectio class="col-md-12 text-center"  style="display: block; padding: 5px 0 4px 0;">
+            <div class=" col-md-12 text-center form-group" >
+              <q-item-label class="text-bold">SELECCIONE PRESENTACIÓN</q-item-label>
+                <q-select rounded outlined v-model="metho" :options="options"/>
             </div>
           </q-card-sectio>
-          <q-card-sectio class="col-md-12 text-center">
+          <q-card-sectio class="col-md-12 text-center "  style="display: block; padding: 5px 0 4px 0">
             <div class=" col-md-12 text-center form-group">
-              <label>SELECCIONE CANTIDAD</label>
+              <q-item-label  class="text-bold">SELECCIONE CANTIDAD</q-item-label>
               <q-input rounded outlined type="number"
                        input-class="text-center"
                        bottom-slots v-model="amount">
@@ -49,9 +47,8 @@
             </div>
           </q-card-sectio>
         </div>
-      </q-card>
+      </div>
     </div>
-  </q-page>
 </template>
 
 <script>
@@ -63,7 +60,7 @@ export default defineComponent({
   data () {
     return {
       product: '',
-      metho: '',
+      metho: 'Unidad',
       amount: 1,
       options: ['Unidad', 'Caja o Paquetes'],
       lineaProduct: []
@@ -72,13 +69,17 @@ export default defineComponent({
   computed: {
     money () {
       return parseFloat(this.product.sale_price).toFixed(2)
+    },
+    boxMoney () {
+      return parseFloat(this.product.sale_price).toFixed(2) * this.product.units_per_box
     }
   },
   created () {
     api.get('/products/consult-products/' + this.$route.params.id).then(response => {
       this.product = response.data
-      console.log(this.product.inventory)
+      this.$store.dispatch('storePush/setProduct', this.product)
     })
+    this.$store.dispatch('storePush/setUpdateState')
   },
   methods: {
     async send () {
@@ -93,7 +94,9 @@ export default defineComponent({
         product_id: this.product.id,
         code_cabys: this.product.code_cabys,
         amount: this.amount,
+        discount: 0,
         price: this.product.sale_price,
+        total: parseFloat(this.product.sale_price) * parseFloat(this.amount),
         rate: this.product.iva,
         code_iva: this.product.code_iva,
         tariff_iva: this.product.tarifa_iva,
@@ -104,6 +107,7 @@ export default defineComponent({
       }
       console.log(lineaProduct)
       await this.$store.dispatch('storePush/addProductAction', lineaProduct)
+      await this.$store.dispatch('storePush/setUpdateState')
     },
     incrementar () {
       if (this.product.inventory.amount > this.amount) {
@@ -122,12 +126,6 @@ export default defineComponent({
   }
 })
 </script>
-<style>
-  .q-card {
-    width: 50%;
-  }
+<style >
 
-  img.responsive {
-    height: 450px;
-  }
 </style>

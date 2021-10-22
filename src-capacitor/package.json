@@ -1,0 +1,11 @@
+{
+  "name": "friendly_pos_fill",
+  "version": "0.0.1",
+  "description": "Esta aplicación estamos creando para poder realizar un presupuesto familiar básico para cualquier familia ",
+  "author": "Anwar Sarmiento <asarmiento@sistemasamigables.com>",
+  "private": true,
+  "dependencies": {
+    "@capacitor/cli": "^2.0.0",
+    "@capacitor/core": "^2.0.0"
+  }
+}

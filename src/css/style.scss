@@ -1,0 +1,86 @@
+.page-container{
+  left: 0;
+  width: 100%;
+  padding: 64px  0  0  0 !important;
+}
+.menu-header  {
+  background: #321582;
+  background: linear-gradient(
+      270deg, #412020 23%, #010012 68%);
+  margin: 0;
+}
+.header-container {
+  background: #170a3f;
+  background: linear-gradient(
+      209deg, #170a3f 23%, #00010d 45%);
+
+  height: 123px;
+}
+.header-info-search{
+  height: 100px;
+  margin-right: 45px;
+  margin-left: 50px;
+  padding: 15px 25px 0 25px;
+}
+.div-breadcrumbs{
+  background: #d9d9d9;
+  padding-left: 30px;
+  padding-right: 30px;
+  box-sizing: border-box;
+  font-size: 14px;
+  line-height: 1.42857143;
+}
+
+.q-card {
+  width: 50%;
+}
+.card-product{
+  width: 24%;
+  min-height: 38rem;
+}
+.box-product-unit{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 10vh;
+}
+.img-unit{
+  margin-top: 12px;
+  min-width: 33rem;
+  min-height: 30rem;
+  max-width: none;
+  max-height: none;
+}
+.price-box{
+  font-weight: bold;
+  font-size: 26px;
+  font-family: 'Montserrat', sans-serif;
+  color: #240e5d;
+  display: inline-block;
+  margin: 0;
+}
+.price-unite{
+  font-weight: bold;
+  font-size: 14px;
+  font-family: 'Montserrat', sans-serif;
+  color: #240e5d;
+  display: inline-block;
+  margin: 0;
+}
+.desription-product{
+  text-transform: uppercase;
+  display: block;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 24px;
+  color: #333333;
+  word-break: break-word;
+  width: 100%;
+  padding: 4vh;
+}
+
+.title-card-store{
+  color: #000000;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 21px;
+  font-weight: 700;
+}

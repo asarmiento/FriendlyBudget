@@ -1,7 +1,7 @@
 <template>
-  <q-btn round  flat dense  icon="shopping_cart" to="/list-card" class="q-ml-md">
-    <q-badge v-if="countProducts" color="red" floating>{{countProducts.length}}</q-badge>
-    <q-tooltip v-if="countProducts"
+  <q-btn round  flat dense  icon="shopping_cart" to="/list-card" @click="updateState" size="lg" class="q-ml-md">
+    <q-badge v-if="countProducts.product" color="red" floating>{{countProducts.product.length}}</q-badge>
+    <q-tooltip v-if="countProducts.product"
                :target="true"
                anchor="bottom left"
                transition-show="rotate"
@@ -9,7 +9,7 @@
                class="bg-white text-primary">
       <div class="q-pa-md" style="max-width: 350px">
         <q-list  >
-          <div v-for="product in countProducts" :key="product.id">
+          <div v-for="product in countProducts.product" :key="product.id">
             <q-item  clickable v-ripple >
               <q-item-section avatar>
                 <q-avatar rounded>
@@ -27,7 +27,8 @@
 </template>
 
 <script>
-import { defineComponent, ref, computed } from 'vue'
+import { defineComponent, ref } from 'vue'
+import { mapGetters } from 'vuex'
 export default defineComponent({
   name: 'shoppCard',
   data () {
@@ -35,14 +36,26 @@ export default defineComponent({
       listsProducts: []
     }
   },
-  mounted () {},
-  computed: {},
+  mounted () {
+    this.$store.dispatch('storePush/setUpdateState')
+  },
+  computed: {
+    // mix the getters into computed with object spread operator
+    ...mapGetters({
+      countProducts: 'storePush/countProductGetter'
+      // ...
+    })
+  },
+  methods: {
+    updateState () {
+      this.$store.dispatch('storePush/setUpdateState')
+    }
+  },
+  watch: {
+  },
   setup () {
-    const countProducts = computed(() => JSON.parse(localStorage.getItem('productsCard')))
-    console.log('main', countProducts, JSON.parse(localStorage.getItem('productsCard')))
     return {
-      basic: ref(false),
-      countProducts
+      basic: ref(false)
     }
   }
 })
