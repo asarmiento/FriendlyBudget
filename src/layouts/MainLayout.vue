@@ -17,18 +17,30 @@
             <q-avatar>
               <img src="../assets/v4.0/FP-Iconoapp-01.png">
             </q-avatar>
-            <q-btn-dropdown stretch flat :label="`Hola: ${user.username}`" size="md">
+            <q-btn-dropdown v-if="customer" stretch flat :label="`Hola: ${customer.company_name}`" size="md">
               <q-list>
-                <q-item v-for="n in 3" :key="`x.${n}`" clickable v-close-popup tabindex="0">
+                <q-item to="/mi-perfil" clickable v-close-popup tabindex="0">
                   <q-item-section avatar>
-                    <q-avatar icon="folder" color="secondary" text-color="white" />
+                    <q-avatar icon="manage_accounts"  text-color="gray" />
+                  </q-item-section>
+                  <q-item-section >
+                    <q-item-label>Mi Perfil</q-item-label>
+                  </q-item-section>
+                </q-item>
+                <q-item  clickable v-close-popup tabindex="0">
+                  <q-item-section avatar>
+                    <q-avatar icon="fingerprint"  text-color="gray" />
                   </q-item-section>
                   <q-item-section>
-                    <q-item-label>Photos</q-item-label>
-                    <q-item-label caption>February 22, 2016</q-item-label>
+                    <q-item-label>Cambio de contraseña</q-item-label>
                   </q-item-section>
-                  <q-item-section side>
-                    <q-icon name="info" />
+                </q-item>
+                <q-item @click="logoutUser" clickable v-close-popup tabindex="0">
+                  <q-item-section avatar>
+                    <q-avatar icon="logout"  text-color="gray" />
+                  </q-item-section>
+                  <q-item-section>
+                    <q-item-label>Cerrar Sesión</q-item-label>
                   </q-item-section>
                 </q-item>
               </q-list>
@@ -89,12 +101,22 @@ export default defineComponent({
       text: ''
     }
   },
+  created () {
+    this.$store.dispatch('authModules/tryCustomerAction')
+  },
   computed: {
     ...mapGetters({
-      product: 'storePush/getProductGetter'
+      product: 'storePush/getProductGetter',
+      customer: 'authModules/CustomerGetter'
     })
   },
   components: { shoppCard },
+  methods: {
+    async logoutUser () {
+      await this.$store.dispatch('authModules/logoutAction')
+      this.$router.push({ path: '/' })
+    }
+  },
   setup () {
     const leftDrawerOpen = ref(false)
     const store = useStore()

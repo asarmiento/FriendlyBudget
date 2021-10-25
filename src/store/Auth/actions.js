@@ -15,6 +15,7 @@ export function sendSessionAction (context, payload) {
     localStorage.setItem('token', response.data.access_token)
     localStorage.setItem('tokenExpiration', expirationDate)
     localStorage.setItem('user', JSON.stringify(response.data.user))
+    localStorage.setItem('customer', JSON.stringify(response.data.customer))
     console.log('hola mundo 5')
     const timer = setTimeout(function () {
       // context.dispatch('autoLogout')
@@ -25,7 +26,8 @@ export function sendSessionAction (context, payload) {
       token: response.data.access_token,
       tokenExpiration: expirationDate,
       timer: timer,
-      user: response.data.user
+      user: response.data.user,
+      customer: response.data.customer
     })
     console.log('hola mundo 7')
     this.$router.push('/inicio')
@@ -36,8 +38,24 @@ export function sendSessionAction (context, payload) {
   })
 }
 
+export function tryCustomerAction (context) {
+  const customer = localStorage.getItem('customer')
+  console.log('customer', customer.id)
+  if (customer != null) {
+    context.commit('setCustomer', {
+      customer: JSON.parse(customer)
+    })
+  }
+}
 export function trySessionAction (context) {
   const token = localStorage.getItem('token')
   console.log(token)
   api.defaults.headers.common.Authorization = `Bearer ${token}`
+}
+export function logoutAction (context) {
+  localStorage.removeItem('token')
+  localStorage.removeItem('tokenExpiration')
+  localStorage.removeItem('productsCard')
+  localStorage.removeItem('user')
+  api.defaults.headers.common.Authorization = ''
 }

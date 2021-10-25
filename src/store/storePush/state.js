@@ -1,6 +1,7 @@
 export default function () {
   return {
     productsCard: [],
-    product: null
+    product: null,
+    totales: null
   }
 }

@@ -11,3 +11,6 @@ export function didAutoLogout (state) {
 export function userName (state) {
   return localStorage.getItem('user')
 }
+export function CustomerGetter (state) {
+  return state.customer
+}

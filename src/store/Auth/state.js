@@ -3,6 +3,7 @@ export default function () {
     token: null,
     tokenExpiration: null,
     timer: null,
+    customer: null,
     user: null
   }
 }

@@ -105,6 +105,20 @@ const routes = [
       requiresAuth: true
     }
   },
+  {
+    path: '/mi-perfil',
+    component: () => import('layouts/MainLayout.vue'),
+    children: [
+      {
+        path: '',
+        component: () => import('pages/users/Profile.vue'),
+        name: 'Mi perfil',
+        meta: {
+          requiresAuth: true
+        }
+      }
+    ]
+  },
 
   // Always leave this as last one,
   // but you can also remove it

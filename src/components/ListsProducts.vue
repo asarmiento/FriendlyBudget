@@ -25,9 +25,10 @@
             <div v-if="product.inventory.amount > 0">
               <q-list separator>
                 <q-slide-item>
-                  <q-btn class="img-lists-product" unelevated :to="`/image-producto/${product.id}`" append>
-                    <img :src="product.url_img" class="" :alt="product.description" :title="product.description"/>
+                  <q-btn  class="img-lists-product" unelevated :to="`/image-producto/${product.id}`" append>
+                    <img v-if="product.url_img" :src="product.url_img" class="" :alt="product.description" :title="product.description"/>
                     <!--<img :src="product.url_img2" class="responsive " style="display: none"  />-->
+                    <icon v-else name="add_photo_alternate">No tiene Imagen</icon>
                   </q-btn>
                   <q-card-section>
                     <div class="row items-center no-wrap">
