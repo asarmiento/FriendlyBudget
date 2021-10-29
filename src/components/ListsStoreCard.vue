@@ -1,6 +1,29 @@
 <template>
-  <q-page class="q-pa-md list-card">
-    <h1 class="title-card-store">Carrito de compra</h1>
+  <q-page class="q-px-md  list-card">
+    <div class="row q-mx-lg flex justify-between">
+      <h1 class="title-card-store">Carrito de compra</h1>
+      <h4>Número de pedido: {{getNumeration.consecutive}}</h4>
+      <div class="q-mr-lg q-px-md shadow-7 native-mobile" style="max-width: 350px; " v-if="getCustomer.credit_limit > 0">
+        <q-list class="q-mt-md q-mr-sm ">
+          <h6 style="margin: 0px;"> Información de Crédito</h6>
+          <q-item   v-ripple>
+            <q-item-section no-wrap>Limite de Crédito: {{getCustomer.credit_limit}}</q-item-section>
+          </q-item>
+
+          <q-item  v-ripple>
+            <q-item-section no-wrap>Saldo Pendiente: {{getCustomer.due}}</q-item-section>
+          </q-item>
+
+          <q-item  v-ripple>
+
+            <q-item-section no-wrap>Saldo disponible: {{Number(getCustomer.credit_limit)- Number(getCustomer.due)}}</q-item-section>
+          </q-item>
+        </q-list>
+      </div>
+    </div>
+    <div class="row  q-mx-lg">
+      </div>
+    <h5 ></h5>
     <q-markup-table flat bordered>
       <thead class="bg-primary text-white">
       <tr>
@@ -13,96 +36,107 @@
       </tr>
       </thead>
       <tbody class="bg-white text-primary">
+      <tr v-if="loading">
+        <td colspan="6" class="text-center">    <q-circular-progress
+          indeterminate
+          size="90px"
+          :thickness="0.4"
+          color="primary"
+          center-color="grey-8"
+          track-color="transparent"
+          class="q-ma-md"
+        /></td>
+      </tr>
+      <template  v-if="!loading">
       <tr v-for="(product,index) in listsProducts" :key="product.id">
         <td class="text-left text-description">
           <q-img :src="product.url_img" style="height: 100px; max-width: 100px"/>
           {{product.description}}
         </td>
         <td class="text-center">
-          <div class="input-group" >
-            <span @click="removeUnitProduct" class="input-group-addon"><q-icon name="chevron_left" color="primary"></q-icon></span>
-            <input type="text" class="form-control" v-model="product.amount"  >
-            <span  @click="addUnitProduct" class="input-group-addon"><q-icon name="chevron_right" color="primary"></q-icon></span>
+          <div class="input-group">
+            <span @click="removeUnitProduct" class="input-group-addon"><q-icon name="chevron_left"
+                                                                               color="primary"></q-icon></span>
+            <input type="text" class="form-control" v-model="product.amount">
+            <span @click="addUnitProduct" class="input-group-addon"><q-icon name="chevron_right" color="primary"
+                                                                            push></q-icon></span>
           </div>
         </td>
         <td class="text-center styleNumberProduct">{{formatPrice(product)}}</td>
         <td class="text-center styleNumberProduct">{{product.discount}}</td>
         <td class="text-center styleNumberProduct">{{product.total}}</td>
         <td class="text-center">
-          <q-item-label class="text-red-delete"   @click="deleteUnitProductCard(index)"><q-icon name="delete_outline" size="md"></q-icon> Eliminar</q-item-label>
+          <q-item-label class="text-red-delete" @click="deleteUnitProductCard(index)">
+            <q-icon name="delete_outline" size="md"></q-icon>
+            Eliminar
+          </q-item-label>
         </td>
       </tr>
+      </template>
       </tbody>
     </q-markup-table>
-    <div class="q-mt-md">
-     <div class="row">
-       <div class="col-2 col-md-2 col-sm-12"><q-btn class="" @click="clearListCard">Vaciar El carrito</q-btn></div>
-       <div class="col-6 col-md-6 col-sm-12 text-right">
-         <q-card class="no-shadow col-6 col-md-6 col-sm-12 ">
-           <q-list bordered style="font-size: 2em; color: #2C2B7C; font-weight: bold">
-             <q-item  class="q-my-sm" >
-               <q-item-section >
-                 Subtotal:
-               </q-item-section>
 
-               <q-item-section>
-                 <q-item-label>{{totalesCard.subtotal}}</q-item-label>
-               </q-item-section>
+    <div class="q-mt-md " style="position:relative; left: 5%;">
+      <div class="row">
+        <div class="col-2 col-md-2 col-sm-12">
+          <q-btn class="no-wrap bg-grey-2 " @click="clearListCard" push>Vaciar El carrito</q-btn>
+        </div>
+        <div class="col-6 col-md-6 col-sm-12 text-right">
+          <q-card class="no-shadow col-6 col-md-6 col-sm-12 ">
+            <q-list bordered style="font-size: 2em; color: #2C2B7C; font-weight: bold">
+              <q-item class="q-my-sm">
+                <q-item-section>
+                  Subtotal:
+                </q-item-section>
 
-             </q-item>
-             <q-item  class="q-my-sm" >
-               <q-item-section >
-                 Descuento:
-               </q-item-section>
+                <q-item-section>
+                  <q-item-label v-if="totalesCard">{{formatTotal(totalesCard.subtotal)}}</q-item-label>
+                </q-item-section>
 
-               <q-item-section>
-                 <q-item-label>{{totalesCard.discount}}</q-item-label>
-               </q-item-section>
+              </q-item>
+              <q-item class="q-my-sm">
+                <q-item-section>
+                  Descuento:
+                </q-item-section>
 
-             </q-item>
-             <q-item  class="q-my-sm" >
-               <q-item-section >
-                 IVA:
-               </q-item-section>
+                <q-item-section>
+                  <q-item-label v-if="totalesCard">{{formatTotal(totalesCard.discount)}}</q-item-label>
+                </q-item-section>
 
-               <q-item-section>
-                 <q-item-label>{{totalesCard.totalIva}}</q-item-label>
-               </q-item-section>
+              </q-item>
+              <q-item class="q-my-sm">
+                <q-item-section>
+                  IVA:
+                </q-item-section>
 
-             </q-item>
+                <q-item-section>
+                  <q-item-label v-if="totalesCard">{{formatTotal(totalesCard.totalIva)}}</q-item-label>
+                </q-item-section>
 
-             <q-separator />
-             <q-item  class="q-mb-sm" >
-               <q-item-section  class="text-right ">Total:
-               </q-item-section>
+              </q-item>
 
-               <q-item-section class="q-mb-sm">
-                 {{totalesCard.total}}
-               </q-item-section>
-             </q-item>
-           </q-list>
-              </q-card>
-       </div>
-<div class="col-3 col-md-3 col-sm-12 ">
-  <q-card class="no-shadow ">
-    <q-section-card>
-      <q-btn class="bg-primary" >Generar pedido</q-btn>
-    </q-section-card>
-  </q-card></div>
-     </div>
+              <q-separator/>
+              <q-item class="q-mb-sm">
+                <q-item-section class="text-right ">Total:
+                </q-item-section>
+
+                <q-item-section class="q-mb-sm" v-if="totalesCard">
+                  {{formatTotal(totalesCard.total)}}
+                </q-item-section>
+              </q-item>
+            </q-list>
+          </q-card>
+        </div>
+        <div class="col-3 col-md-3 col-sm-12 ">
+          <q-card class="no-shadow ">
+            <q-section-card>
+              <q-btn @click="send(listsProducts,totalesCard)" class="bg-primary no-wrap" text-color="white" push>Generar pedido</q-btn>
+            </q-section-card>
+          </q-card>
+        </div>
+      </div>
     </div>
-    <q-dialog
-      v-model="small"
-    >
-      <q-card style="width: 150px">
-        <q-card-section>
-          <q-input @change="updateAmount" :dense="dense" type="number" v-model="data.amount"/>
-        </q-card-section>
-        <q-card-actions align="right" class="bg-white text-teal">
-          <q-btn icon="remove_shopping_cart" flat label="Listo" v-close-popup/>
-        </q-card-actions>
-      </q-card>
-    </q-dialog>
+
   </q-page>
 </template>
 
@@ -115,8 +149,23 @@ export default {
     return {
       data: {
         amount: 0
-      }
+      },
+      loading: false
     }
+  },
+  created () {
+    this.$store.dispatch('authModules/tryNumerationAction')
+  },
+  computed: {
+    // mix the getters into computed with object spread operator
+    ...mapGetters({
+      listsProducts: 'storePush/countProductGetter',
+      totalesCard: 'storePush/getTotalCardGetter',
+      getNumeration: 'authModules/numerationGetter',
+      getCustomer: 'authModules/CustomerGetter',
+      messageResponse: 'storePush/getMessageGetter'
+      // ...
+    })
   },
   mounted () {
     this.$store.dispatch('storePush/setUpdateState')
@@ -149,22 +198,24 @@ export default {
       this.$store.dispatch('storePush/deleteProductAction')
     },
     formatPrice (product) {
-      return parseFloat(product.price).toFixed(0)
+      return parseFloat(Number(product.price)).toFixed(0)
+    },
+    formatTotal (product) {
+      return parseFloat(Number(product)).toFixed(0)
     },
     selectAmount (product) {
       this.data.amount = this.updateAmountProduct()
     },
-    getSelectedString () {
-    // return selected.value.length === 0 ? '' : `${selected.value.length} record${selected.value.length > 1 ? 's' : ''} selected of ${this.rows.length}`
+    async send (products, totals) {
+      this.loading = true
+      await this.$store.dispatch('storePush/sendDataPreSale', { products: products, totals: totals })
+      this.$q.notify({
+        spinner: true,
+        message: this.messageResponse.message,
+        timeout: 2000
+      })
+      this.loading = false
     }
-  },
-  computed: {
-    // mix the getters into computed with object spread operator
-    ...mapGetters({
-      listsProducts: 'storePush/countProductGetter',
-      totalesCard: 'storePush/getTotalCardGetter'
-      // ...
-    })
   },
   setup () {
     const selected = ref([])
@@ -209,7 +260,7 @@ export default {
   .input-group-addon {
     background-color: #fff;
     border: 1px solid #2C2B7C;
-    border-radius: 50%;
+    border-radius: 40%;
     color: inherit;
     font-size: 14px;
     font-weight: 500;
@@ -279,14 +330,14 @@ export default {
   }
   .input-group-addon {
     padding: 6px 12px;
-    font-size: 14px;
+    font-size: 16px;
     font-weight: bold;
     line-height: 1;
     color: #555;
     text-align: center;
     background-color: #eee;
     border: 1px solid #2C2B7C;
-    border-radius: 50%;
+    border-radius: 30%;
   }
   .input-group-addon.input-sm {
     padding: 5px 10px;
@@ -352,5 +403,9 @@ export default {
   .input-group-btn:last-child > .btn-group {
     z-index: 2;
     margin-left: -1px;
+  }
+  .q-markup-table{
+    width: 90%;
+    left: 5%;
   }
 </style>

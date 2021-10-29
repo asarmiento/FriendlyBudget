@@ -1,12 +1,13 @@
 <template>
     <div class="row justify-center box-product-unit">
       <q-card class=" no-shadow col-md-4  ">
-        <q-img :src="product.url_img" class=" img-unit "   style="height: 280px; max-width: 300px" />
+        <q-img :src="product.url_img" class=" img-unit "   style="height: 280px; max-width: 80%" />
       </q-card>
-      <q-separator vertical/>
-      <div  style="width: 17%; display: flex; justify-content: center; align-items: center; margin-top: -59px; margin-right: 15px; margin-left: 10px">
-        <div class="row">
-          <q-card-section class="col-md-12 desription-product">{{product.description}}</q-card-section>
+
+      <div  style="width: 17%; display: flex; justify-content: right; align-items: center; margin-top: -59px; margin-right: 15px; margin-left: 5%">
+        <q-separator vertical/>
+        <div class="row " style="margin-left: 2%">
+          <q-card-section class="col-md-12 desription-product text-center">{{product.description}}</q-card-section>
           <q-card-section class="col-md-12 text-center">
             <q-item-label style="font-size: 18px; padding: 3px"><i>Precio Caja*:</i> <strong class="price-box"> ₡{{boxMoney}}</strong></q-item-label>
             <q-item-label style="font-size: 18px; padding: 3px"><i>Precio Unitario*:</i> <strong class="price-unite"> ₡{{money}} </strong></q-item-label>
@@ -63,7 +64,8 @@ export default defineComponent({
       metho: 'Unidad',
       amount: 1,
       options: ['Unidad', 'Caja o Paquetes'],
-      lineaProduct: []
+      lineaProduct: [],
+      rutaBack: ''
     }
   },
   computed: {
@@ -80,6 +82,8 @@ export default defineComponent({
       this.$store.dispatch('storePush/setProduct', this.product)
     })
     this.$store.dispatch('storePush/setUpdateState')
+    this.rutaBack = this.$route.params.route
+    console.log('ruta', this.$route)
   },
   methods: {
     async send () {
@@ -105,9 +109,11 @@ export default defineComponent({
         url_img: this.product.url_img,
         description: this.product.description
       }
-      console.log(lineaProduct)
+
       await this.$store.dispatch('storePush/addProductAction', lineaProduct)
       await this.$store.dispatch('storePush/setUpdateState')
+      this.$q.notify('Se agrego con éxito')
+      this.$router.push(`/${this.$route.params.route}`)
     },
     incrementar () {
       if (this.product.inventory.amount > this.amount) {
@@ -126,6 +132,9 @@ export default defineComponent({
   }
 })
 </script>
-<style >
-
+<style scoped>
+  .q-img__image
+  {
+    width: 80%;
+  }
 </style>

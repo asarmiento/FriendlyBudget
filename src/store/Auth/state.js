@@ -4,6 +4,7 @@ export default function () {
     tokenExpiration: null,
     timer: null,
     customer: null,
+    numeration: null,
     user: null
   }
 }

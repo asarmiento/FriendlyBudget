@@ -5,3 +5,6 @@ export function addProductMutation (state, playload) {
 export function productMuttation (state, playload) {
   state.product = playload
 }
+export function messageMuttation (state, playload) {
+  state.product = playload.message
+}

@@ -14,3 +14,6 @@ export function userName (state) {
 export function CustomerGetter (state) {
   return state.customer
 }
+export function numerationGetter (state) {
+  return state.numeration
+}

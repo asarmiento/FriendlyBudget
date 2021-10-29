@@ -144,8 +144,8 @@ module.exports = configure(function (ctx) {
       },
 
       manifest: {
-        name: 'FriendlyPosFill',
-        short_name: 'FriendlyPosFill',
+        name: 'FriendlyStore',
+        short_name: 'FriendlyStore',
         description: 'Esta aplicación estamos creando para poder realizar un presupuesto familiar básico para cualquier familia ',
         display: 'standalone',
         orientation: 'portrait',
@@ -211,7 +211,7 @@ module.exports = configure(function (ctx) {
       builder: {
         // https://www.electron.build/configuration/configuration
 
-        appId: 'friendly_pos_fill'
+        appId: 'friendly_store'
       },
 
       // "chain" is a webpack-chain object https://github.com/neutrinojs/webpack-chain

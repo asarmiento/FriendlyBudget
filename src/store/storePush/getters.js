@@ -7,3 +7,6 @@ export function getProductGetter (state) {
 export function getTotalCardGetter (state) {
   return state.totales
 }
+export function getMessageGetter (state) {
+  return state.message
+}

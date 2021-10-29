@@ -1,11 +1,12 @@
 <template>
   <q-drawer
+    side="right"
     v-model="drawer"
     show-if-above
     :width="350"
-    :breakpoint="500"
+    elevated
   >
-    <q-list padding class="menu-list q-ml-md border-radius border-primary">
+    <q-list padding class="menu-list q-mr-md border-radius border-primary">
       <q-item clickable v-ripple>
         <q-item-section avatar>
           <img src="../assets/v4.0/FP-Iconoapp-01.png" width="50">

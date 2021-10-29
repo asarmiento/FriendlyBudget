@@ -11,7 +11,7 @@ export function sendSessionAction (context, payload) {
     const expiresIn = +response.data.expires_at * 1000
     const expirationDate = new Date().getTime() + expiresIn
 
-    console.log('hola mundo 4')
+    localStorage.setItem('numeration', JSON.stringify({ consecutive: getNumeration(response.data.user, response.data.numeration), number: response.data.numeration }))
     localStorage.setItem('token', response.data.access_token)
     localStorage.setItem('tokenExpiration', expirationDate)
     localStorage.setItem('user', JSON.stringify(response.data.user))
@@ -21,12 +21,12 @@ export function sendSessionAction (context, payload) {
       // context.dispatch('autoLogout')
     }, expiresIn)
 
-    console.log('hola mundo 6')
     context.commit('setToken', {
       token: response.data.access_token,
       tokenExpiration: expirationDate,
       timer: timer,
       user: response.data.user,
+      numeration: getNumeration(response.data.user),
       customer: response.data.customer
     })
     console.log('hola mundo 7')
@@ -52,10 +52,50 @@ export function trySessionAction (context) {
   console.log(token)
   api.defaults.headers.common.Authorization = `Bearer ${token}`
 }
+export function tryNumerationAction (context) {
+  const numeration = JSON.parse(localStorage.getItem('numeration'))
+  console.log(numeration)
+  context.commit('setNumerationMutation', {
+    numeration: numeration
+  })
+}
 export function logoutAction (context) {
   localStorage.removeItem('token')
   localStorage.removeItem('tokenExpiration')
   localStorage.removeItem('productsCard')
   localStorage.removeItem('user')
+  localStorage.removeItem('customer')
+  localStorage.removeItem('numeration')
   api.defaults.headers.common.Authorization = ''
+}
+
+function getNumeration (customer, numeration) {
+  let num
+  let cont
+  if (Number(numeration) === 0) {
+    cont = customer.id + '02-000001'
+  } else if (Number(numeration) > 0 && Number(numeration) < 10) {
+    num = Number(numeration) + 1
+    cont = customer.id + '02-00000' + num
+  } else if (Number(numeration) >= 10 && Number(numeration) < 100) {
+    num = Number(numeration) + 1
+    cont = customer.id + '02-0000' + num
+  } else if (Number(numeration) >= 100 && Number(numeration) < 1000) {
+    num = Number(numeration) + 1
+    cont = customer.id + '02-000' + num
+  } else if (Number(numeration) >= 1000 && Number(numeration) < 10000) {
+    num = Number(numeration) + 1
+    cont = customer.id + '02-00' + num
+  } else if (Number(numeration) >= 10000 && Number(numeration) < 100000) {
+    num = Number(numeration) + 1
+    cont = customer.id + '02-0' + num
+  } else if (Number(numeration) >= 100000 && Number(numeration) < 1000000) {
+    num = Number(numeration) + 1
+    cont = customer.id + '02-0' + num
+  } else {
+    num = Number(numeration) + 1
+    cont = customer.id + '02-' + num
+  }
+
+  return cont
 }

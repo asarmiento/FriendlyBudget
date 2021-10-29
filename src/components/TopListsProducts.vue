@@ -1,17 +1,16 @@
 <template>
   <div class="row lists-products " >
       <div ref="myListRef" class=" lists-products-page row justify-center">
-        <q-infinite-scroll  :offset="550">
+        <q-infinite-scroll  :offset="550" v-if="listsProducts">
           <div
-            v-for="product in listsProducts"
+            v-for="product in listsProducts.data"
             :key="product.id"
-            class="product-item "
+            class="product-item-top "
           >
-            <div v-if="product.inventory.amount > 0">
-              <q-list separator>
+            <q-list separator>
                 <q-slide-item>
-                  <q-btn  class="img-lists-product" unelevated :to="`${this.$route.fullPath}/${product.id}`" append>
-                    <img v-if="product.url_img" :src="product.url_img" class="" :alt="product.description" :title="product.description"/>
+                  <q-btn  class="img-lists-product" unelevated :to="`/image-producto/${product.id}`" append>
+                    <img v-if="product.url_img" :src="product.url_img" class="" :alt="product.descripcion" :title="product.descripcion"/>
                     <!--<img :src="product.url_img2" class="responsive " style="display: none"  />-->
                     <icon v-else name="add_photo_alternate">No tiene Imagen</icon>
                   </q-btn>
@@ -19,54 +18,26 @@
                     <div class="row items-center no-wrap">
                       <div class="text-h6 text-center details-product">
                         <router-link class="container-product-item" :to="`/image-producto/${product.id}`"
-                                     :title="product.description">{{product.description}}
+                                     :title="product.descripcion">{{product.descripcion}}
                         </router-link>
                       </div>
                     </div>
                   </q-card-section>
                   <q-card-section>
-                    <div class="text-center price-lists">
+                    <div class="text-center price-lists-top">
                       ₡ {{price(product)}}
                     </div>
                   </q-card-section>
-                  <q-card-actions class="text-center items-center justify-center ">
-                    <q-btn  icon="shopping_cart" @click="send(product)" standout color="primary"
-                           label="Agregar"/>
-                  </q-card-actions>
                 </q-slide-item>
               </q-list>
-            </div>
-            <div v-else class="disabled bg-green">
-              <q-list separator >
-                <q-slide-item>
-                  <q-btn class="img-lists-product " style=" width: 100%;   display: flex;
-    justify-content: center;
-    align-items: center;" unelevated to="" append>
-                    <img :src="product.url_img" class="" :alt="product.description" :title="product.description"/>
-                    <!--<img :src="product.url_img2" class="responsive " style="display: none"  />-->
-                  </q-btn>
-                  <q-card-section>
-                    <div class="row items-center no-wrap">
-                      <div class="text-h6 text-center details-product">
-                        <router-link  class="container-product-item" to=""
-                                     :title="product.description">{{product.description}}
-                        </router-link>
-                      </div>
-                    </div>
-                  </q-card-section>
-                  <q-card-section>
-                    <div class="text-center price-lists">
-                      ₡ {{price(product)}}
-                    </div>
-                  </q-card-section>
-                  <q-card-actions class="text-center items-center justify-center ">
-                    <q-btn   icon="shopping_cart" @click="send(product)"  standout  color="primary"
-                           label="Agregar"/>
-                  </q-card-actions>
-                </q-slide-item>
-              </q-list>
-            </div>
           </div>
+          <template v-slot:loading>
+            <div class="row justify-center q-my-md ">
+              <div class="col-lg-12 justify-center">
+                <q-spinner-dots color="primary" size="50px"/>
+              </div>
+            </div>
+          </template>
         </q-infinite-scroll>
       </div>
     </div>
@@ -74,30 +45,22 @@
 
 <script>
 import { defineComponent, ref } from 'vue'
-import { api } from 'boot/axios'
 export default defineComponent({
   name: 'ListsProducts',
   props: {
-    menu: {
-      type: String,
+    listsProducts: {
+      type: Array,
       required: true
     }
   },
   components: { },
   data () {
     return {
-      listsProducts: [],
       metho: 'Unidad',
       amount: 1
     }
   },
   created () {
-    api.get('/products/lists-products/' + this.menu).then((response) => {
-      if (response.status === 200) {
-        this.listsProducts = response.data
-      }
-    })
-
     this.$store.dispatch('storePush/setUpdateState')
   },
   updated () {

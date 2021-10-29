@@ -35,13 +35,13 @@ const routes = [
     ]
   },
   {
-    path: '/image-producto/:id',
+    path: '/:route/:id',
     component: () => import('layouts/MainLayout.vue'),
     children: [
       {
         path: '',
         component: () => import('pages/Product.vue'),
-        name: 'Productos',
+        name: 'Producto',
         props: true,
         meta: {
           requiresAuth: true
