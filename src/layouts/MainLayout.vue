@@ -7,20 +7,15 @@
             <q-avatar class="q-mr-md" size="4rem" >
               <img src="../assets/v4.0/FP-Iconoapp-01.png">
             </q-avatar>
-            <q-toolbar-title class="  " >
-              <q-input dark dense standout v-model="text" label="¿Que buscas hoy?" placeholder="¿Que buscas hoy?" input-class="text-left" class="q-ml-md bg-grey text-primary">
-                <template v-slot:append>
-                  <q-icon v-if="text === ''" name="search" />
-                  <q-icon v-else name="clear" class="cursor-pointer" @click="text = ''" />
-                </template>
-              </q-input>
+            <q-toolbar-title class="search-header-products " >
+              <vue-selects :dataSource="[{label:'hola muendo',value:'a'}]" optionvalue="" optionlabel=""></vue-selects>
             </q-toolbar-title>
           </q-toolbar>
-          <q-toolbar inset class="col-6 fa-align-right text-white">
+          <q-toolbar inset class="col-6  text-white">
 
             <q-space />
             <q-avatar>
-              <icon name="users" />
+              <q-avatar icon="account_circle" />
             </q-avatar>
             <q-btn-dropdown v-if="customer" stretch flat :label="`Hola: ${customer.company_name}`" size="md">
               <q-list>
@@ -34,7 +29,7 @@
                 </q-item>
                 <q-item clickable v-close-popup tabindex="0">
                   <q-item-section avatar>
-                    <q-avatar icon="fingerprint" text-color="gray"/>
+                    <q-avatar icon="miscellaneous_services" text-color="gray"/>
                   </q-item-section>
                   <q-item-section>
                     <q-item-label>Cambio de contraseña</q-item-label>
@@ -51,7 +46,7 @@
               </q-list>
             </q-btn-dropdown>
             <q-separator dark vertical/>
-            <q-btn stretch flat icon="star" size="lg"/>
+            <q-btn stretch  icon="star" size="lg"/>
             <q-separator dark vertical/>
             <shopp-card></shopp-card>
           </q-toolbar>
@@ -98,6 +93,7 @@ const linksList = [
 import { defineComponent, ref, computed } from 'vue'
 import { useStore, mapGetters } from 'vuex'
 import shoppCard from '../components/shoppCard'
+import vueSelects from '../components/vueSelects'
 export default defineComponent({
   name: 'MainLayout',
   data () {
@@ -108,14 +104,16 @@ export default defineComponent({
   },
   created () {
     this.$store.dispatch('authModules/tryCustomerAction')
+    // this.$store.dispatch('storePush/listprodutsAction')
   },
   computed: {
     ...mapGetters({
       product: 'storePush/getProductGetter',
+      listProducts: 'authModules/getListsProductGetter',
       customer: 'authModules/CustomerGetter'
     })
   },
-  components: { shoppCard },
+  components: { shoppCard, vueSelects },
   methods: {
     async logoutUser () {
       await this.$store.dispatch('authModules/logoutAction')

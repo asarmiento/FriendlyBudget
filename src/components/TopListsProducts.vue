@@ -31,13 +31,6 @@
                 </q-slide-item>
               </q-list>
           </div>
-          <template v-slot:loading>
-            <div class="row justify-center q-my-md ">
-              <div class="col-lg-12 justify-center">
-                <q-spinner-dots color="primary" size="50px"/>
-              </div>
-            </div>
-          </template>
         </q-infinite-scroll>
       </div>
     </div>

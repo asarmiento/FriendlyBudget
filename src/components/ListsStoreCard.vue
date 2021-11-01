@@ -2,24 +2,9 @@
   <q-page class="q-px-md  list-card">
     <div class="row q-mx-lg flex justify-between">
       <h1 class="title-card-store">Carrito de compra</h1>
+      <h1 class="title-card-store">Día de entrega de pedidos los: {{getCustomer.visit_day}}</h1>
       <h4>Número de pedido: {{getNumeration.consecutive}}</h4>
-      <div class="q-mr-lg q-px-md shadow-7 native-mobile" style="max-width: 350px; " v-if="getCustomer.credit_limit > 0">
-        <q-list class="q-mt-md q-mr-sm ">
-          <h6 style="margin: 0px;"> Información de Crédito</h6>
-          <q-item   v-ripple>
-            <q-item-section no-wrap>Limite de Crédito: {{getCustomer.credit_limit}}</q-item-section>
-          </q-item>
 
-          <q-item  v-ripple>
-            <q-item-section no-wrap>Saldo Pendiente: {{getCustomer.due}}</q-item-section>
-          </q-item>
-
-          <q-item  v-ripple>
-
-            <q-item-section no-wrap>Saldo disponible: {{Number(getCustomer.credit_limit)- Number(getCustomer.due)}}</q-item-section>
-          </q-item>
-        </q-list>
-      </div>
     </div>
     <div class="row  q-mx-lg">
       </div>
@@ -55,10 +40,10 @@
         </td>
         <td class="text-center">
           <div class="input-group">
-            <span @click="removeUnitProduct" class="input-group-addon"><q-icon name="chevron_left"
+            <span @click="removeUnitProduct(product)" class="input-group-addon"><q-icon name="chevron_left"
                                                                                color="primary"></q-icon></span>
             <input type="text" class="form-control" v-model="product.amount">
-            <span @click="addUnitProduct" class="input-group-addon"><q-icon name="chevron_right" color="primary"
+            <span @click="addUnitProduct(product)" class="input-group-addon"><q-icon name="chevron_right" color="primary"
                                                                             push></q-icon></span>
           </div>
         </td>
@@ -66,7 +51,7 @@
         <td class="text-center styleNumberProduct">{{product.discount}}</td>
         <td class="text-center styleNumberProduct">{{product.total}}</td>
         <td class="text-center">
-          <q-item-label class="text-red-delete" @click="deleteUnitProductCard(index)">
+          <q-item-label class="text-red-delete" @click="deleteUnitProductCard(product)">
             <q-icon name="delete_outline" size="md"></q-icon>
             Eliminar
           </q-item-label>
@@ -127,11 +112,28 @@
             </q-list>
           </q-card>
         </div>
-        <div class="col-3 col-md-3 col-sm-12 ">
+        <div class="q-mr-lg q-px-md shadow-7 native-mobile" style="max-width: 350px; " v-if="getCustomer.credit_limit > 0">
+          <q-list class="q-mt-md q-mr-sm ">
+            <h6 style="margin: 0px;"> Información de Crédito</h6>
+            <q-item   v-ripple>
+              <q-item-section no-wrap>Limite de Crédito: {{getCustomer.credit_limit}}</q-item-section>
+            </q-item>
+
+            <q-item  v-ripple>
+              <q-item-section no-wrap>Saldo Pendiente: {{getCustomer.due}}</q-item-section>
+            </q-item>
+
+            <q-item  v-ripple>
+
+              <q-item-section no-wrap>Saldo disponible: {{Number(getCustomer.credit_limit)- Number(getCustomer.due)}}</q-item-section>
+            </q-item>
+          </q-list>
+        </div>
+        <div v-if="!loading" class="col-3 col-md-3 col-sm-12 ">
           <q-card class="no-shadow ">
-            <q-section-card>
+            <q-card-section dense>
               <q-btn @click="send(listsProducts,totalesCard)" class="bg-primary no-wrap" text-color="white" push>Generar pedido</q-btn>
-            </q-section-card>
+            </q-card-section>
           </q-card>
         </div>
       </div>
@@ -142,8 +144,7 @@
 
 <script>
 import { ref } from 'vue'
-import { mapGetters } from 'vuex'
-import { api } from 'boot/axios'
+import { mapGetters, mapState } from 'vuex'
 export default {
   data () {
     return {
@@ -165,6 +166,8 @@ export default {
       getCustomer: 'authModules/CustomerGetter',
       messageResponse: 'storePush/getMessageGetter'
       // ...
+    }),
+    ...mapState({
     })
   },
   mounted () {
@@ -172,26 +175,29 @@ export default {
   },
   methods: {
     deleteUnitProductCard (row) {
-      this.listsProducts.product.split(row)
-      this.$store.dispatch('storePush/updateProductAction', this.listsProducts.product)
+      this.$store.dispatch('storePush/deleteProductListsAction', row)
     },
     updateAmount (row) {
       console.log(row)
       this.$store.dispatch('storePush/updateProductAction', this.data)
     },
-    removeUnitProduct (product) {
+    async removeUnitProduct (product) {
+      console.log(product)
       if (product.amount > 1) {
-        product.amount--
+        await this.$store.dispatch('storePush/decreaseProductAction', product)
+        this.$q.notify('Se ha diminuido la unidad')
       } else {
         this.$q.notify('No se puede menos de una unidad')
       }
     },
     async addUnitProduct (product) {
-      const result = await api.get('/products/consult-products/' + this.$route.params.id)
-      if (result.inventory.amount > product.amount) {
-        product.amount++
+      console.log(product)
+      if (product.amount > 0) {
+        await this.$store.dispatch('storePush/increaseProductAction', product)
+        console.log(this.$store.getters.listsProducts)
+        this.$q.notify('Se ha aumentado una unidad')
       } else {
-        this.$q.notify('No hay mas Inventario')
+        this.$q.notify('No se puede menos de una unidad')
       }
     },
     clearListCard () {

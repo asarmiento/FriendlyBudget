@@ -16,7 +16,7 @@ export function sendSessionAction (context, payload) {
     localStorage.setItem('tokenExpiration', expirationDate)
     localStorage.setItem('user', JSON.stringify(response.data.user))
     localStorage.setItem('customer', JSON.stringify(response.data.customer))
-    console.log('hola mundo 5')
+    localStorage.setItem('products', JSON.stringify(response.data.products))
     const timer = setTimeout(function () {
       // context.dispatch('autoLogout')
     }, expiresIn)
@@ -24,12 +24,14 @@ export function sendSessionAction (context, payload) {
     context.commit('setToken', {
       token: response.data.access_token,
       tokenExpiration: expirationDate,
-      timer: timer,
+      timer: timer
+    })
+    context.commit('setDataAll', {
       user: response.data.user,
       numeration: getNumeration(response.data.user),
-      customer: response.data.customer
+      customer: response.data.customer,
+      products: response.data.products
     })
-    console.log('hola mundo 7')
     this.$router.push('/inicio')
     return response.data
   }).catch(e => {
@@ -44,6 +46,15 @@ export function tryCustomerAction (context) {
   if (customer != null) {
     context.commit('setCustomer', {
       customer: JSON.parse(customer)
+    })
+  }
+}
+export function tryListproductsAction (context) {
+  const products = localStorage.getItem('products')
+  console.log('customer', products.id)
+  if (products != null) {
+    context.commit('setListProducts', {
+      customer: JSON.parse(products)
     })
   }
 }

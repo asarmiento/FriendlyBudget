@@ -10,11 +10,11 @@
             <div v-if="product.inventory.amount > 0">
               <q-list separator>
                 <q-slide-item>
-                  <q-btn  class="img-lists-product" unelevated :to="`${this.$route.fullPath}/${product.id}`" append>
+                  <router-link  class="img-lists-product"  :to="`${this.$route.fullPath}/${product.id}`" >
                     <img v-if="product.url_img" :src="product.url_img" class="" :alt="product.description" :title="product.description"/>
                     <!--<img :src="product.url_img2" class="responsive " style="display: none"  />-->
                     <icon v-else name="add_photo_alternate">No tiene Imagen</icon>
-                  </q-btn>
+                  </router-link>
                   <q-card-section>
                     <div class="row items-center no-wrap">
                       <div class="text-h6 text-center details-product">
@@ -25,7 +25,13 @@
                     </div>
                   </q-card-section>
                   <q-card-section>
-                    <div class="text-center price-lists">
+                    <template v-if="product.iva > 0">
+                      <div  class="text-center price-lists">
+                        *₡ {{price(product)}}
+                      </div>
+                      <i>*Precio con Iva incluido</i>
+                    </template>
+                    <div v-else class="text-center price-lists">
                       ₡ {{price(product)}}
                     </div>
                   </q-card-section>
@@ -51,11 +57,18 @@
                         <router-link  class="container-product-item" to=""
                                      :title="product.description">{{product.description}}
                         </router-link>
+
                       </div>
                     </div>
                   </q-card-section>
                   <q-card-section>
-                    <div class="text-center price-lists">
+                    <template v-if="product.iva > 0">
+                      <div  class="text-center price-lists">
+                        *₡ {{price(product)}}
+                      </div>
+                      <i >*Precio con Iva incluido</i>
+                    </template>
+                    <div v-else class="text-center price-lists">
                       ₡ {{price(product)}}
                     </div>
                   </q-card-section>
