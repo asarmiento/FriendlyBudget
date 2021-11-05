@@ -144,7 +144,7 @@ width: 9rem;
   background-color: rgba(236, 236, 236, 0.59);
   max-width: 500px;
   max-height: 65%;
-  top: 0%;
+  top: -10%;
   left: 0%;
   border-radius: 4%;
 }
@@ -174,14 +174,13 @@ width: 9rem;
   margin-bottom: 10px;
 }
 .top-product-index{
-  margin-top: 9%;
-  width: 113% !important;
+  width: 100% !important;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 .top-product-index h4{
-  width: 100% !important;
+  width: 60% !important;
   left: -10px;
 }
 
@@ -430,17 +429,19 @@ width: 9rem;
   .box-login {
     position: relative;
     background-color: rgba(236, 236, 236, 0.79);
-    max-width: 550px;
-    min-height: 450px;
-    top: 10%;
+    min-width: 550px;
+    min-height: 400px;
+    top: -15%;
     left: -25%;
+    bottom: 5rem;
     border-radius: 4%;
   }
   .logo-bg {
-    height: 240px;
+    height: 140px;
+    width: 550px;
   }
   .logo-bg img{
-    max-height: 140px;
+    max-height: 100px;
   }
 .q-field__label{
   color: $primary;
@@ -457,11 +458,13 @@ width: 9rem;
     height: 100%;
   }
   .banner-login {
-    min-height: 100px;
+    min-height: 150px;
     min-width: 100%;
-    bottom: 25px;
+    bottom: 5px;
     z-index: 1;
     padding: 5px;
+    display: flex;
+    justify-content: center;
     position: absolute;
   }
   .banner-login--card {
@@ -471,15 +474,15 @@ width: 9rem;
     position: relative;
     background-color: rgba(44, 43, 124, 0.75);
     min-height: 5rem;
-    width: 450px;
+    width: 33%;
     border: #21BA45 1px solid;
-    margin: 3px;
+    margin: 2px;
     border-radius: 4%;
     color: white;
     font-size: 24px;
   }
   .banner-login--card:first-child {
-    margin-left: 2%;
+    margin-left: 0%;
   }
   .banner-login--card:last-child{
     display: none;
@@ -495,7 +498,9 @@ width: 9rem;
   .lists-products{
     clear: both;
   }
-
+  .q-infinite-scroll{
+    min-width: 100%;
+  }
   .card-products{
     width: 24%;
     min-height: 38rem;
@@ -586,6 +591,7 @@ width: 9rem;
     width: auto;
     padding: 15px 0 0 0;
     text-decoration: none;
+    color: $primary;
   }
   .title-name-menu {
     color: #333333;
@@ -690,9 +696,13 @@ width: 9rem;
 
 
   /* code style de screen index*/
+  .box-crousel{
+    height: 28rem;
+  }
   .carousel-index {
     min-width: 100%;
     min-height: 28rem;
+    height: 29rem;
     top: -15px;
     position: absolute;
     left: -16px;
@@ -703,13 +713,11 @@ width: 9rem;
     background-size: cover;
   }
   .page-index-products{
-    margin-top: 1rem;
     min-width: 100%;
     left: 0;
-    position: absolute;
+    position: relative;
   }
   .top-product-index{
-    margin-top: 5%;
     width: 100%;
     display: flex;
     justify-content: center;
@@ -731,7 +739,7 @@ width: 9rem;
     align-items: center;
     background-color: rgba(200, 200, 194, 0.58);
     z-index: 1;
-    height: 100px;
+    height: 60px;
     width: 140px;
     color: #2C2B7C;
     float: left;

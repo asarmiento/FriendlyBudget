@@ -7,6 +7,7 @@ import axios from 'axios'
 // good idea to move this instance creation inside of the
 // "export default () => {}" function below (which runs individually
 // for each client)
+// const api = axios.create({ baseURL: 'http://friendlypos.test/api-web/v1' })
 const api = axios.create({ baseURL: 'http://api.elimurgue.com/api-web/v1' })
 
 export default boot(({ app }) => {

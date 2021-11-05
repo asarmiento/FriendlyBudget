@@ -1,21 +1,6 @@
 <template>
   <div class="active-list">
-    <q-select
-      filled
-      v-model="valuemember"
-      use-input
-      use-chips
-      input-debounce="0"
-      @new-value="createValue"
-      :options="dataSource"
-      @filter="filterFn"
-      style="width: 250px"
-      @input="change"
-      @keydown.down="down"
-      @keyup.up="up"
-      @click="down"
-      @keypress.enter="enter" class="form-control"
-    ><q-icon name="search" size="xl" /></q-select>
+
   </div>
 </template>
 

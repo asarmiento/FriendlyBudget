@@ -35,6 +35,20 @@ const routes = [
     ]
   },
   {
+    path: '/resultado-busqueda:result',
+    component: () => import('layouts/MainLayout.vue'),
+    children: [
+      {
+        path: '',
+        component: () => import('pages/resultado.vue'),
+        name: 'Resultasdos',
+        meta: {
+          requiresAuth: true
+        }
+      }
+    ]
+  },
+  {
     path: '/:route/:id',
     component: () => import('layouts/MainLayout.vue'),
     children: [

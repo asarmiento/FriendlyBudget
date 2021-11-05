@@ -3,7 +3,7 @@ import { LocalStorage } from 'quasar'
 export function addProductAction (context, payload) {
   let products = []
   if (localStorage.getItem('productsCard')) {
-    const lists = JSON.parse(localStorage.getItem('productsCard'))
+    const lists = JSON.parse(LocalStorage.getItem('productsCard'))
     lists.forEach(term => {
       if (term.product_id === payload.product_id) {
         term.amount = Number(payload.amount) + Number(term.amount)
@@ -53,12 +53,14 @@ export function updateProductAction (context, payload) {
 }
 
 export function deleteProductListsAction (context, payload) {
-  console.log(payload)
-  this.state.productsCard.splice(this.state.productsCard.indexOf(payload), 1)
-  console.log(this.state.productsCard)
+  const lists = JSON.parse(localStorage.getItem('productsCard'))
+  console.log(payload, lists)
+  lists.splice(payload, 1)
+  console.log(lists)
+  localStorage.setItem('productsCard', JSON.stringify(lists))
   context.commit('addProductMutation', {
-    product: this.state.productsCard,
-    totales: totalAll(this.state.productsCard)
+    product: lists,
+    totales: totalAll(lists)
   })
 }
 
@@ -128,6 +130,61 @@ export function deleteProductAction (context) {
   context.commit('addProductMutation', {
     product: [],
     totales: []
+  })
+}
+export function getListsProducts (context, payload) {
+  api.get('/products/lists-products/' + payload).then(response => {
+    const products = response.data
+    localStorage.setItem('listsproducts', JSON.stringify(products))
+    context.commit('listProductMutation', { products })
+  })
+}
+export function listsBrandsProductsActions (context, payload) {
+  api.get('/products/lists-products-brands/' + payload.menu).then(response => {
+    const products = response.data
+    console.log('Lista de products', products)
+    localStorage.setItem('listsBrands', JSON.stringify(products))
+    context.commit('listBrandsMutation', { products })
+  })
+}
+export function listsCategoriesProductsActions (context, payload) {
+  api.get('/products/lists-products-categories/' + payload.menu).then(response => {
+    const products = response.data
+    console.log('Lista de products', products)
+    localStorage.setItem('listsCategories', JSON.stringify(products))
+    context.commit('listCategoriesMutation', { products })
+  })
+}
+export function filterCategoriesProductsActions (context, payload) {
+  api.get('/products/filter-category-products/' + payload.category.value + '/' + payload.menu).then(response => {
+    const products = response.data
+    localStorage.setItem('listsproducts', JSON.stringify(products))
+    context.commit('listProductMutation', { products })
+  })
+}
+export function filterBrandsProductsActions (context, payload) {
+  api.get('/products/filter-brand-products/' + payload.brand.value + '/' + payload.menu).then(response => {
+    const products = response.data
+    localStorage.setItem('listsproducts', JSON.stringify(products))
+    context.commit('listProductMutation', { products })
+  })
+}
+export function filterAllProductsActions (context, payload) {
+  if (payload !== '') {
+    api.post('/products/filter-all-products', payload).then(response => {
+      const products = response.data
+      console.log('filterAllProductsActions', products)
+      localStorage.setItem('listsSelectProducts', JSON.stringify(products))
+      context.commit('listSelectProductMutation', { products: products })
+    })
+  }
+}
+export function filterSelectAllProductsActions (context) {
+  api.get('/products/filter-select-all-products').then(response => {
+    const products = response.data
+    localStorage.setItem('listsSelectProducts', JSON.stringify(products))
+    context.commit('listSelectProductMutation', { products: products })
+    this.$router.push({ to: '/resultado-busqueda', params: products[0].family })
   })
 }
 export function sendDataPreSale (context, payload) {
@@ -201,6 +258,7 @@ export function sendDataPreSale (context, payload) {
     context.commit('messageMuttation', {
       message: result
     })
+    this.$router.push('/inicio')
   }).catch(error => {
     context.commit('messageMuttation', {
       message: error.response.data
@@ -232,7 +290,6 @@ function totalAll (products) {
       iva = (value.price) - priceTax
       iva = iva * value.amount
       priceTax = priceTax * value.amount
-      console.log('verificando tax: ' + value.description, 'imp:', tax, 'priceImp:', priceTax, 'inva:', iva)
       totalTax += (priceTax)
       totalIva += (iva)
     } else {
@@ -240,15 +297,11 @@ function totalAll (products) {
       tax = 0
 
       totalExemp += (price)
-      console.log('verificando exem: ' + value.description, price)
     }
     subTotal = (totalTax) + totalExemp
-
-    console.log('verificando subtotal: ' + value.description, 'subtotal', subTotal, 'totaltax:', totalTax, 'totalExe', totalExemp, 'totaliva:', totalIva)
   })
   total = (subTotal) - (discount) + (totalIva)
 
-  console.log('verificando total: ', subTotal, discount, total)
   const totalAll = { subtotal: subTotal, discount: discount, total: total, totalExemp: totalExemp, totalTax: totalTax, totalIva: totalIva }
   return totalAll
 }

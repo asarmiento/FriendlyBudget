@@ -1,9 +1,9 @@
 <template>
   <div class="row lists-products " >
       <div ref="myListRef" class=" lists-products-page row justify-center">
-        <q-infinite-scroll  :offset="550" v-if="listsProducts">
+        <q-infinite-scroll  :offset="550" v-if="listsTopIndexProducts">
           <div
-            v-for="product in listsProducts.data"
+            v-for="product in listsTopIndexProducts.data"
             :key="product.id"
             class="product-item-top "
           >
@@ -12,7 +12,10 @@
                   <q-btn  class="img-lists-product" unelevated :to="`/image-producto/${product.id}`" append>
                     <img v-if="product.url_img" :src="product.url_img" class="" :alt="product.descripcion" :title="product.descripcion"/>
                     <!--<img :src="product.url_img2" class="responsive " style="display: none"  />-->
-                    <icon v-else name="add_photo_alternate">No tiene Imagen</icon>
+                    <template v-else>
+                      <i class="far fa-eye-slash"></i>
+                      <q-item-label>No tiene Imagen</q-item-label>
+                    </template>
                   </q-btn>
                   <q-card-section>
                     <div class="row items-center no-wrap">
@@ -39,10 +42,9 @@
 <script>
 import { defineComponent, ref } from 'vue'
 export default defineComponent({
-  name: 'ListsProducts',
+  name: 'ListsTopProducts',
   props: {
-    listsProducts: {
-      type: Array,
+    listsTopIndexProducts: {
       required: true
     }
   },

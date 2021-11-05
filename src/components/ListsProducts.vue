@@ -1,9 +1,56 @@
 <template>
   <div class="row lists-products " >
+      <div class="row col-xs-12 col-md-4 col-lg-4 q-pa-md">
+        <div class="container">
+          <div class="container-title">
+            <q-item-label class="title-name-menu">{{this.$route.name}}</q-item-label>
+          </div>
+          <div class="container-title">
+            <q-item-label class="data-name-menu"><strong>{{listsProducts.length}}</strong> PRODUCTOS ENCONTRADOS
+            </q-item-label>
+          </div>
+        </div>
+      </div>
+      <div class="row col-xs-12 col-md-4 col-lg-4 q-pa-md">
+            <q-select filled v-model="brand" :options="listsBrands"
+                      @update:model-value="filterListsBrand"
+                      label="Filtrar por Marcas"
+                      option-value="value"
+                      option-label="label"
+                      style="min-width: 100%;"
+                      clearable
+            >
+              <template v-slot:no-option>
+                <q-item>
+                  <q-item-section class="text-grey">
+                    No results
+                  </q-item-section>
+                </q-item>
+              </template>
+            </q-select>
+      </div>
+      <div class="row col-xs-12 col-md-4 col-lg-4 q-pa-md">
+            <q-select filled v-model="category" :options="listsCategories"
+                      @update:model-value="filterListsCategory"
+                      label="Filtrar por Categoría"
+                      option-value="value"
+                      option-label="label"
+                      style="min-width: 100%;"
+                      clearable
+            >
+              <template v-slot:no-option>
+                <q-item>
+                  <q-item-section class="text-grey">
+                    No results
+                  </q-item-section>
+                </q-item>
+              </template>
+            </q-select>
+      </div>
       <div ref="myListRef" class=" lists-products-page row justify-center">
         <q-infinite-scroll  :offset="550">
           <div
-            v-for="product in listsProducts"
+            v-for="product in listsProducts.products"
             :key="product.id"
             class="product-item "
           >
@@ -13,7 +60,10 @@
                   <router-link  class="img-lists-product"  :to="`${this.$route.fullPath}/${product.id}`" >
                     <img v-if="product.url_img" :src="product.url_img" class="" :alt="product.description" :title="product.description"/>
                     <!--<img :src="product.url_img2" class="responsive " style="display: none"  />-->
-                    <icon v-else name="add_photo_alternate">No tiene Imagen</icon>
+                    <template v-else>
+                      <i class="far fa-eye-slash"></i>
+                      <q-item-label>No tiene Imagen</q-item-label>
+                    </template>
                   </router-link>
                   <q-card-section>
                     <div class="row items-center no-wrap">
@@ -87,7 +137,7 @@
 
 <script>
 import { defineComponent, ref } from 'vue'
-import { api } from 'boot/axios'
+import { mapGetters } from 'vuex'
 export default defineComponent({
   name: 'ListsProducts',
   props: {
@@ -99,23 +149,48 @@ export default defineComponent({
   components: { },
   data () {
     return {
-      listsProducts: [],
       metho: 'Unidad',
-      amount: 1
+      amount: 1,
+      brand: '',
+      category: ''
     }
   },
   created () {
-    api.get('/products/lists-products/' + this.menu).then((response) => {
-      if (response.status === 200) {
-        this.listsProducts = response.data
-      }
-    })
+    this.$store.dispatch('storePush/getListsProducts', this.menu)
+    this.$store.dispatch('storePush/listsBrandsProductsActions', { menu: this.menu })
+    this.$store.dispatch('storePush/listsCategoriesProductsActions', { menu: this.menu })
 
     this.$store.dispatch('storePush/setUpdateState')
   },
-  updated () {
+  computed: {
+    ...mapGetters({
+      listsProducts: 'storePush/getListsProductsGetter',
+      listsCategories: 'storePush/listsCategoriesGetter',
+      listsBrands: 'storePush/listsBrandsGetter'
+    })
   },
   methods: {
+
+    filterFn (val, update, abort) {
+      update(() => {
+        const needle = val.toLocaleLowerCase()
+        this.listSearchSelect = this.listSearchSelect.filter(v => v.description.toLocaleLowerCase().indexOf(needle) > -1)
+      })
+    },
+    async filterListsCategory () {
+      if (this.category) {
+        await this.$store.dispatch('storePush/filterCategoriesProductsActions', { category: this.category, menu: this.menu })
+      } else {
+        this.$store.dispatch('storePush/getListsProducts', this.menu)
+      }
+    },
+    async filterListsBrand () {
+      if (this.brand) {
+        await this.$store.dispatch('storePush/filterBrandsProductsActions', { brand: this.brand, menu: this.menu })
+      } else {
+        this.$store.dispatch('storePush/getListsProducts', this.menu)
+      }
+    },
     price (product) {
       return parseFloat(product.sale_price).toFixed(0)
     },

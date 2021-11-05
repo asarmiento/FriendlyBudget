@@ -42,7 +42,6 @@ export function sendSessionAction (context, payload) {
 
 export function tryCustomerAction (context) {
   const customer = localStorage.getItem('customer')
-  console.log('customer', customer.id)
   if (customer != null) {
     context.commit('setCustomer', {
       customer: JSON.parse(customer)
@@ -51,7 +50,6 @@ export function tryCustomerAction (context) {
 }
 export function tryListproductsAction (context) {
   const products = localStorage.getItem('products')
-  console.log('customer', products.id)
   if (products != null) {
     context.commit('setListProducts', {
       customer: JSON.parse(products)
@@ -60,12 +58,10 @@ export function tryListproductsAction (context) {
 }
 export function trySessionAction (context) {
   const token = localStorage.getItem('token')
-  console.log(token)
   api.defaults.headers.common.Authorization = `Bearer ${token}`
 }
 export function tryNumerationAction (context) {
   const numeration = JSON.parse(localStorage.getItem('numeration'))
-  console.log(numeration)
   context.commit('setNumerationMutation', {
     numeration: numeration
   })

@@ -3,12 +3,39 @@
     <q-header elevated class="header-container " height-hint="98">
       <div class="q-pa-md header-info-search q-gutter-y-sm">
         <div class="row no-wrap shadow-1  ">
-          <q-toolbar class="col-6 " style="border-radius: 4%;">
+          <q-toolbar class="col-6 " style="border-radius: 4%; ">
             <q-avatar class="q-mr-md" size="4rem" >
               <img src="../assets/v4.0/FP-Iconoapp-01.png">
             </q-avatar>
-            <q-toolbar-title class="search-header-products " >
-              <vue-selects :dataSource="[{label:'hola muendo',value:'a'}]" optionvalue="" optionlabel=""></vue-selects>
+            <q-toolbar-title class="search-header-products bg-white " style="display: none">
+              <q-select
+                filled
+                v-model="select_result"
+                option-value="id"
+                option-label="description"
+                label="¿Que estas buscando hoy?"
+                use-input
+                hide-selected
+                transition-show="scale"
+                transition-hide="scale"
+                fill-input
+                input-debounce="0"
+                :options="listSearchSelect"
+                @filter="filterFn"
+                @input-value="filterSelectAll"
+                style="width: 100%; padding-bottom: 32px; background-color: white; height: 100%"
+              >
+                <template v-slot:option="scope">
+                  <q-item v-bind="scope.itemProps">
+                    <q-item-section avatar>
+                      <q-img :src="scope.opt.url_img" style="min-height: 40px; max-width: 50px" />
+                    </q-item-section>
+                    <q-item-section>
+                      <q-item-label>{{ scope.opt.description }}</q-item-label>
+                    </q-item-section>
+                  </q-item>
+                </template>
+              </q-select>
             </q-toolbar-title>
           </q-toolbar>
           <q-toolbar inset class="col-6  text-white">
@@ -46,13 +73,10 @@
               </q-list>
             </q-btn-dropdown>
             <q-separator dark vertical/>
-            <q-btn stretch  icon="star" size="lg"/>
-            <q-separator dark vertical/>
             <shopp-card></shopp-card>
           </q-toolbar>
         </div>
       </div>
-
       <q-tabs align="left" exact dense class="menu-header">
         <q-route-tab to="/alimentos" label="Alimentos"/>
         <q-route-tab to="/vino-y-destilados" label="Vinos y Destilados"/>
@@ -69,17 +93,28 @@
         </q-toolbar>
       </div>
     </q-header>
-
     <q-page-container style="padding-left:0">
-      <q-page class="q-pa-md">
+      <q-page class="q-mx-md">
         <router-view/>
       </q-page>
     </q-page-container>
-    <q-footer elevated class="bg-primary text-white text-center">
-      <q-toolbar>
-        <q-toolbar-title>
-          <q-item-label>Sistemas Amigables Latinoamérica S.A.</q-item-label>
+    <q-footer elevated  height-hint="150" class="header-container text-white text-center">
+      <q-toolbar inset>
+        <q-toolbar-title >
+          <q-item-label class="flex-center">
+            <img class="bg-white" src="../assets/v4.0/logo-friendlyPos.png" height="50"  style="margin-right: 10px;   border-radius: 4%; margin-top: 2px"/>
+            <img class="bg-white" src="../assets/v4.0/Logo-FriendlyFac-08.jpg" height="50" style="margin-right: 160px; border-radius: 4%;  margin-top: 2px"/>
+            </q-item-label>
         </q-toolbar-title>
+      </q-toolbar>
+      <q-toolbar inset>
+        <q-toolbar-title>
+          <q-item-label caption style="color:white; text-align: center">© power by Sistemas Amigables Latinoamérica S.A. | Todos Los Derechos Reservados.</q-item-label>
+        </q-toolbar-title>
+        <q-item-label style="min-width: 150px; text-align: left">
+          Sigenos en : <q-btn><i class="fab fa-facebook fa-2x"></i></q-btn>
+           <q-btn><i class="fab fa-linkedin fa-2x"></i></q-btn>
+        </q-item-label>
       </q-toolbar>
     </q-footer>
   </q-layout>
@@ -93,28 +128,46 @@ const linksList = [
 import { defineComponent, ref, computed } from 'vue'
 import { useStore, mapGetters } from 'vuex'
 import shoppCard from '../components/shoppCard'
-import vueSelects from '../components/vueSelects'
 export default defineComponent({
   name: 'MainLayout',
   data () {
     return {
       drawer: '',
+      select_result: '',
+      listSearchSelect: '',
       text: ''
     }
   },
   created () {
+    this.$store.dispatch('storePush/filterSelectAllProductsActions')
     this.$store.dispatch('authModules/tryCustomerAction')
-    // this.$store.dispatch('storePush/listprodutsAction')
   },
   computed: {
     ...mapGetters({
       product: 'storePush/getProductGetter',
-      listProducts: 'authModules/getListsProductGetter',
+      listSelectProducts: 'storePush/listsSelectProductsGetter',
       customer: 'authModules/CustomerGetter'
     })
   },
-  components: { shoppCard, vueSelects },
+  components: { shoppCard },
+  mounted () {
+    this.listSearchSelect = this.listSelectProducts
+  },
   methods: {
+    filterFn (val, update, abort) {
+      update(() => {
+        const needle = val.toLocaleLowerCase()
+        this.listSearchSelect = this.listSearchSelect.filter(v => v.description.toLocaleLowerCase().indexOf(needle) > -1)
+      })
+    },
+    async filterSelectAll () {
+      console.log('hola mundo', this.select_result, 'sasas', this.listSearchSelect)
+      if (this.select_result !== '') {
+        this.$store.dispatch('storePush/filterAllProductsActions', this.select_result)
+      } else {
+        this.$store.dispatch('storePush/filterSelectAllProductsActions')
+      }
+    },
     async logoutUser () {
       await this.$store.dispatch('authModules/logoutAction')
       this.$router.push({ path: '/' })
