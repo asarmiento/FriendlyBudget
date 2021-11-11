@@ -33,7 +33,9 @@ export default defineComponent({
   name: 'shoppCard',
   data () {
     return {
-      listsProducts: []
+      listsProducts: [],
+      sortKey: '',
+      desc: true
     }
   },
   mounted () {
@@ -49,6 +51,14 @@ export default defineComponent({
   methods: {
     updateState () {
       this.$store.dispatch('storePush/setUpdateState')
+    },
+    sortedArray (countProducts) {
+      // return _.orderBy(countProducts, 'name', 'asc')
+    },
+    orderBy (sorKey) {
+      this.sortKey = sorKey
+      this.countProducts[sorKey] = !this.countProducts[sorKey]
+      this.desc = this.countProducts[sorKey]
     }
   },
   watch: {

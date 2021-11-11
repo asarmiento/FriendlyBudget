@@ -2,69 +2,72 @@
 const routes = [
   {
     path: '/',
+    meta: {
+      requiresAuth: false
+    },
     component: () => import('layouts/MainLogin.vue'),
     children: [
       { path: '', component: () => import('pages/Login.vue') }
-    ],
-    meta: {
-      requiresAuth: false
-    }
+    ]
   },
   {
     path: '/inicio',
+    meta: {
+      requiresAuth: true
+    },
     component: () => import('layouts/MainLayout.vue'),
     children: [
       { path: '', component: () => import('pages/Index.vue') }
-    ],
-    meta: {
-      requiresAuth: true
-    }
+    ]
   },
   {
     path: '/alimentos',
+    meta: {
+      requiresAuth: true
+    },
     component: () => import('layouts/MainLayout.vue'),
     children: [
       {
         path: '',
         component: () => import('pages/Alimentos.vue'),
-        name: 'Alimentos',
-        meta: {
-          requiresAuth: true
-        }
+        name: 'Alimentos'
       }
     ]
   },
   {
     path: '/resultado-busqueda:result',
+    meta: {
+      requiresAuth: true
+    },
     component: () => import('layouts/MainLayout.vue'),
     children: [
       {
         path: '',
         component: () => import('pages/resultado.vue'),
-        name: 'Resultasdos',
-        meta: {
-          requiresAuth: true
-        }
+        name: 'Resultasdos'
       }
     ]
   },
   {
     path: '/:route/:id',
+    meta: {
+      requiresAuth: true
+    },
     component: () => import('layouts/MainLayout.vue'),
     children: [
       {
         path: '',
         component: () => import('pages/Product.vue'),
         name: 'Producto',
-        props: true,
-        meta: {
-          requiresAuth: true
-        }
+        props: true
       }
     ]
   },
   {
     path: '/vino-y-destilados',
+    meta: {
+      requiresAuth: true
+    },
     component: () => import('layouts/MainLayout.vue'),
     children: [
       {
@@ -72,13 +75,13 @@ const routes = [
         component: () => import('pages/vinoYDestilados.vue'),
         name: 'Vinos y Destilados'
       }
-    ],
-    meta: {
-      requiresAuth: true
-    }
+    ]
   },
   {
     path: '/list-card',
+    meta: {
+      requiresAuth: true
+    },
     component: () => import('layouts/MainLayout.vue'),
     children: [
       {
@@ -86,13 +89,13 @@ const routes = [
         component: () => import('pages/lists-card.vue'),
         name: 'Lista de carrito'
       }
-    ],
-    meta: {
-      requiresAuth: true
-    }
+    ]
   },
   {
     path: '/bebidas-sin-alcohol',
+    meta: {
+      requiresAuth: true
+    },
     component: () => import('layouts/MainLayout.vue'),
     children: [
       {
@@ -100,13 +103,13 @@ const routes = [
         component: () => import('pages/bebidasSinAlcohol.vue'),
         name: 'Bebidas Sin Alcohol'
       }
-    ],
-    meta: {
-      requiresAuth: true
-    }
+    ]
   },
   {
     path: '/cevezas-y-bebidas-alcoholicas',
+    meta: {
+      requiresAuth: true
+    },
     component: () => import('layouts/MainLayout.vue'),
     children: [
       {
@@ -114,22 +117,33 @@ const routes = [
         component: () => import('pages/cevezasYBebidasAlcoholicas.vue'),
         name: 'Cervezas y Bebidas Alcoholicas'
       }
-    ],
-    meta: {
-      requiresAuth: true
-    }
+    ]
   },
   {
     path: '/mi-perfil',
+    meta: {
+      requiresAuth: true
+    },
     component: () => import('layouts/MainLayout.vue'),
     children: [
       {
         path: '',
         component: () => import('pages/users/Profile.vue'),
-        name: 'Mi perfil',
-        meta: {
-          requiresAuth: true
-        }
+        name: 'Mi perfil'
+      }
+    ]
+  },
+  {
+    path: '/change-password',
+    meta: {
+      requiresAuth: true
+    },
+    component: () => import('layouts/MainLayout.vue'),
+    children: [
+      {
+        path: '',
+        component: () => import('pages/users/changePassword.vue'),
+        name: 'Cambio Contraseña'
       }
     ]
   },

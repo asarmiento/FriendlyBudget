@@ -34,11 +34,11 @@
       </tr>
       <template  v-if="!loading">
       <tr v-for="(product,index) in listsProducts" :key="product.id">
-        <td class="text-left text-description bg-accent">
+        <td class="text-left text-description ">
           <q-img :src="product.url_img" style="height: 100px; max-width: 100px"/>
           {{product.description}}
         </td>
-        <td class="text-left flex justify-start bg-yellow">
+        <td class="text-left flex justify-start ">
           <div class="input-group">
             <span @click="removeUnitProduct(product)" class="input-group-addon"><q-icon name="chevron_left"
                                                                                color="primary"></q-icon></span>
@@ -48,8 +48,8 @@
           </div>
         </td>
         <td class="text-center text-primary styleNumberProduct">{{formatPrice(product)}}</td>
-        <td class="text-center text-primary styleNumberProduct">{{product.discount}}</td>
-        <td class="text-center text-primary styleNumberProduct">{{product.total}}</td>
+        <td class="text-center text-primary styleNumberProduct">{{formatTotal(product.discount)}}</td>
+        <td class="text-center text-primary styleNumberProduct">{{formatTotal(product.total)}}</td>
         <td class="text-center">
           <q-item-label class="text-red-delete" @click="deleteUnitProductCard(index)">
             <q-icon name="delete_outline" size="md"></q-icon>
@@ -203,10 +203,10 @@ export default {
       this.$store.dispatch('storePush/deleteProductAction')
     },
     formatPrice (product) {
-      return parseFloat(Number(product.price)).toFixed(0)
+      return parseFloat(Number(product.price)).toFixed(2)
     },
     formatTotal (product) {
-      return parseFloat(Number(product)).toFixed(0)
+      return parseFloat(Number(product)).toFixed(2)
     },
     selectAmount (product) {
       this.data.amount = this.updateAmountProduct()
@@ -217,7 +217,7 @@ export default {
       this.$q.notify({
         spinner: true,
         message: this.messageResponse.message,
-        timeout: 2000
+        timeout: 1000
       })
       this.loading = false
     }

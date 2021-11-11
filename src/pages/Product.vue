@@ -15,7 +15,7 @@
           <q-card-sectio class="col-md-12 text-center"  style="display: block; padding: 5px 0 4px 0;">
             <div class=" col-md-12 text-center form-group" >
               <q-item-label class="text-bold">SELECCIONE PRESENTACIÓN</q-item-label>
-                <q-select rounded outlined v-model="metho" :options="options"/>
+                <q-select rounded outlined  v-model="metho" :options="options"/>
             </div>
           </q-card-sectio>
           <q-card-sectio class="col-md-12 text-center "  style="display: block; padding: 5px 0 4px 0">
@@ -86,6 +86,13 @@ export default defineComponent({
     console.log('ruta', this.$route)
   },
   methods: {
+    amountPack (prod) {
+      if (this.metho === 'Caja o Paquetes') {
+        this.amount = prod.units_per_box
+      } else {
+        this.amount = 1
+      }
+    },
     async send () {
       if (this.metho === '') {
         this.$q.notify('Debe seleccionar la presentación')
@@ -113,7 +120,11 @@ export default defineComponent({
       await this.$store.dispatch('storePush/addProductAction', lineaProduct)
       await this.$store.dispatch('storePush/setUpdateState')
       this.$q.notify('Se agrego con éxito')
-      this.$router.push(`/${this.$route.params.route}`)
+      if (this.$route.params.route === 'image-producto') {
+        this.$router.push('/inicio')
+      } else {
+        this.$router.push(`/${this.$route.params.route}`)
+      }
     },
     incrementar () {
       if (this.product.inventory.amount > this.amount) {

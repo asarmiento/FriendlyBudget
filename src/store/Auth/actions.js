@@ -1,5 +1,4 @@
 import { api } from 'boot/axios'
-
 export function sendSessionAction (context, payload) {
   console.log('hola mundo 2')
   const url = '/login-web'
@@ -35,7 +34,7 @@ export function sendSessionAction (context, payload) {
     this.$router.push('/inicio')
     return response.data
   }).catch(e => {
-    alert('Error: ' + e)
+    this.$q.notify('Error: ' + e)
     return e
   })
 }
@@ -72,6 +71,11 @@ export function logoutAction (context) {
   localStorage.removeItem('productsCard')
   localStorage.removeItem('user')
   localStorage.removeItem('customer')
+  localStorage.removeItem('listsCategories')
+  localStorage.removeItem('listsSelectProducts')
+  localStorage.removeItem('products')
+  localStorage.removeItem('listsBrands')
+  localStorage.removeItem('listsproducts')
   localStorage.removeItem('numeration')
   api.defaults.headers.common.Authorization = ''
 }

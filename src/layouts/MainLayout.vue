@@ -7,6 +7,18 @@
             <q-avatar class="q-mr-md" size="4rem" >
               <img src="../assets/v4.0/FP-Iconoapp-01.png">
             </q-avatar>
+            <q-toolbar-title v-if="totalesCard" class="text-white">
+              Total Impuesto: {{formatTotal(totalesCard.totalTax)}}
+            </q-toolbar-title>
+            <q-toolbar-title v-else class="text-white">
+              Total Impuesto: 0.00
+            </q-toolbar-title>
+            <q-toolbar-title v-if="totalesCard" class="text-white">
+              Total Pedido: {{formatTotal(totalesCard.total)}}
+            </q-toolbar-title>
+            <q-toolbar-title v-else class="text-white">
+              Total Pedido: 0.00
+            </q-toolbar-title>
             <q-toolbar-title class="search-header-products bg-white " style="display: none">
               <q-select
                 filled
@@ -54,7 +66,7 @@
                     <q-item-label>Mi Perfil</q-item-label>
                   </q-item-section>
                 </q-item>
-                <q-item clickable v-close-popup tabindex="0">
+                <q-item clickable to="/change-password" v-close-popup tabindex="0">
                   <q-item-section avatar>
                     <q-avatar icon="miscellaneous_services" text-color="gray"/>
                   </q-item-section>
@@ -90,6 +102,10 @@
             <q-breadcrumbs-el  :label="this.$route.name"/>
             <q-breadcrumbs-el v-if="product && this.$route.name === 'Producto'" :label="product.product.description"/>
           </q-breadcrumbs>
+          <q-space />
+          <q-item-card>
+            Para pagos puedes realizar Sinpe Movil <strong>87479284</strong>
+          </q-item-card>
         </q-toolbar>
       </div>
     </q-header>
@@ -146,12 +162,14 @@ export default defineComponent({
     ...mapGetters({
       product: 'storePush/getProductGetter',
       listSelectProducts: 'storePush/listsSelectProductsGetter',
+      totalesCard: 'storePush/getTotalCardGetter',
       customer: 'authModules/CustomerGetter'
     })
   },
   components: { shoppCard },
   mounted () {
     this.listSearchSelect = this.listSelectProducts
+    this.$store.dispatch('storePush/setUpdateState')
   },
   methods: {
     filterFn (val, update, abort) {
@@ -171,6 +189,9 @@ export default defineComponent({
     async logoutUser () {
       await this.$store.dispatch('authModules/logoutAction')
       this.$router.push({ path: '/' })
+    },
+    formatTotal (product) {
+      return parseFloat(Number(product)).toFixed(2)
     }
   },
   setup () {

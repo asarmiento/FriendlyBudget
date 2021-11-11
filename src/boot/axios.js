@@ -8,7 +8,7 @@ import axios from 'axios'
 // "export default () => {}" function below (which runs individually
 // for each client)
 // const api = axios.create({ baseURL: 'http://friendlypos.test/api-web/v1' })
-const api = axios.create({ baseURL: 'http://api.elimurgue.com/api-web/v1' })
+const api = axios.create({ baseURL: 'http://api.elimurgue.com/api-web/v1', timeout: 1000, headers: { Accept: 'application/json', 'Content-Type': 'application/json' } })
 
 export default boot(({ app }) => {
   // for use inside Vue files (Options API) through this.$axios and this.$api

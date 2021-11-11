@@ -74,18 +74,22 @@
                       </div>
                     </div>
                   </q-card-section>
-                  <q-card-section>
+                  <q-card-section  class="text-center">
                     <template v-if="product.iva > 0">
                       <div  class="text-center price-lists">
                         *₡ {{price(product)}}
                       </div>
-                      <i>*Precio con Iva incluido</i>
+                      <i  class="text-center">*Precio con Iva incluido</i>
                     </template>
                     <div v-else class="text-center price-lists">
                       ₡ {{price(product)}}
                     </div>
                   </q-card-section>
                   <q-card-actions class="text-center items-center justify-center ">
+                    <q-input rounded outlined type="number"
+                             input-class="text-center"
+                             bottom-slots v-model="amount">
+                    </q-input>
                     <q-btn  icon="shopping_cart" @click="send(product)" standout color="primary"
                            label="Agregar"/>
                   </q-card-actions>
@@ -111,18 +115,28 @@
                       </div>
                     </div>
                   </q-card-section>
-                  <q-card-section>
+                  <q-card-section  class="text-center">
                     <template v-if="product.iva > 0">
                       <div  class="text-center price-lists">
                         *₡ {{price(product)}}
                       </div>
-                      <i >*Precio con Iva incluido</i>
+                      <i  class="text-center">*Precio con Iva incluido</i>
                     </template>
                     <div v-else class="text-center price-lists">
                       ₡ {{price(product)}}
                     </div>
                   </q-card-section>
                   <q-card-actions class="text-center items-center justify-center ">
+                    <q-input rounded outlined type="number"
+                             input-class="text-center"
+                             bottom-slots v-model="amount">
+                      <template v-slot:prepend>
+                        <q-btn rounded color="primary" @click="decrementar">-</q-btn>
+                      </template>
+                      <template v-slot:append>
+                        <q-btn rounded color="primary" @click="incrementar">+</q-btn>
+                      </template>
+                    </q-input>
                     <q-btn   icon="shopping_cart" @click="send(product)"  standout  color="primary"
                            label="Agregar"/>
                   </q-card-actions>
@@ -219,6 +233,21 @@ export default defineComponent({
       await this.$store.dispatch('storePush/addProductAction', lineaProduct)
       await this.$store.dispatch('storePush/setUpdateState')
       this.$q.notify('Se ha agredado con éxito al carro de compra')
+      this.amount = 1
+    },
+    incrementar () {
+      if (this.product.inventory.amount > this.amount) {
+        this.amount++
+      } else {
+        this.$q.notify('No hay mas Inventario')
+      }
+    },
+    decrementar () {
+      if (this.amount > 1) {
+        this.amount--
+      } else {
+        this.$q.notify('No se puede menos de una unidad')
+      }
     }
   },
 
