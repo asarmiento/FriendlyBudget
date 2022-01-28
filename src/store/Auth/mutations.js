@@ -1,18 +1,18 @@
 
-export function setToken (state, playload) {
-  state.token = playload.token
-  state.tokenExpiration = playload.tokenExpiration
-  state.timer = playload.timer
+export function setToken (state, payload) {
+  state.token = payload.token
+  state.tokenExpiration = payload.tokenExpiration
+  state.timer = payload.timer
 }
-export function setDataAll (state, playload) {
-  state.user = playload.user
-  state.customer = playload.customer
-  state.numeration = playload.numeartion
-  state.products = playload.products
+export function setDataAll (state, payload) {
+  state.user = payload.user
+  state.customer = payload.customer
+  state.numeration = payload.numeration
+  state.products = payload.products
 }
-export function setCustomer (state, playload) {
-  state.customer = playload.customer
+export function setCustomer (state, payload) {
+  state.customer = payload.customer
 }
-export function setNumerationMutation (state, playload) {
-  state.numeration = playload.numeration
+export function setNumerationMutation (state, payload) {
+  state.numeration = payload.numeration
 }

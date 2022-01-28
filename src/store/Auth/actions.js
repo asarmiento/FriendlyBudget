@@ -1,5 +1,58 @@
 import { api } from 'boot/axios'
 
+export async function login (context, payload) {
+  try {
+    const endpoint = '/user/login-store'
+    const { data: { data: { response } } } = await api.post(endpoint, payload)
+    return response
+  } catch (error) {
+    throw new Error(error.message)
+  }
+}
+
+export function updateApi (context, response) {
+  const { url, access_token: token } = response
+  api.defaults.baseURL = `${url}api-web/v1/`
+  api.defaults.headers.common.Authorization = `Bearer ${token}`
+}
+
+export function setLocalStorage (context, data) {
+  const { user, numeration, access_token: token, customer, products } = data
+  const expiresIn = +data.expires_at * 1000
+  const expirationDate = new Date().getTime() + expiresIn
+
+  localStorage.setItem('numeration',
+    JSON.stringify({
+      consecutive: getNumeration(user, numeration),
+      number: numeration
+    })
+  )
+  localStorage.setItem('token', token)
+  localStorage.setItem('tokenExpiration', expirationDate)
+  localStorage.setItem('user', JSON.stringify(user))
+  localStorage.setItem('customer', JSON.stringify(customer))
+  localStorage.setItem('products', JSON.stringify(products))
+
+  const numerationUser = getNumeration(user)
+  return { expirationDate, numerationUser }
+}
+
+export function setData (context, data) {
+  console.log(data)
+  const { token, expirationDate, user, numerationUser, customer, products } = data
+  context.commit('setToken', {
+    token: token,
+    tokenExpiration: expirationDate,
+    timer: null
+  })
+  context.commit('setDataAll', {
+    user,
+    numeration: numerationUser,
+    customer,
+    products
+  })
+}
+
 export function sendSessionAction (context, payload) {
   console.log('hola mundo 2')
   const url = '/login-web'

@@ -5,7 +5,7 @@
       <div class="text-h2 text-center logo-bg">
         <img src="../assets/v4.0/logo-friendlyPos.png" class="responsive" />
       </div>
-      <q-form  class="q-gutter-y-md "  >
+      <q-form  class="q-gutter-y-md" @submit="send">
         <q-input
           v-model="data.username"
           label="Usuario*"
@@ -24,7 +24,7 @@
           :rules="[val => val && val.length > 0 || 'Por favor escribe tu contraseña']"
         />
                 <div class="text-center">
-          <q-btn @click="send()"  label="Iniciar Sesión" type="submit" color="primary"/>
+          <q-btn label="Iniciar Sesión" type="submit" color="primary"/>
         </div>
       </q-form>
     </div>
@@ -51,20 +51,39 @@ export default ({
   data () {
     return {
       data: {
-        username: '',
-        password: ''
+        username: 'admin',
+        password: 'Fw2045zz85'
       }
     }
   },
   methods: {
     async send () {
-      console.log('hola mundo1')
-      await this.$store.dispatch('authModules/sendSessionAction', {
-        username: this.data.username,
-        password: this.data.password
-      })
-      console.log(this.$store.state.token)
-      this.$router.push('/inicio')
+      try {
+        const response = await this.$store.dispatch('authModules/login', {
+          username: this.data.username,
+          password: this.data.password
+        })
+        const { user, customer, products } = response
+
+        await this.$store.dispatch('authModules/updateApi', response)
+
+        const { expirationDate, numerationUser } = await this.$store.dispatch('authModules/setLocalStorage', response)
+
+        const data = {
+          token: response.access_token,
+          expirationDate,
+          user,
+          numerationUser,
+          customer,
+          products
+        }
+
+        this.$store.dispatch('authModules/setData', data)
+
+        this.$router.push('/inicio')
+      } catch (error) {
+        alert('error' + error.message)
+      }
     }
   }
 })
