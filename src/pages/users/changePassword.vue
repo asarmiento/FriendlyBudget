@@ -1,13 +1,9 @@
 <template>
   <q-page class="q-gutter-md flex flex-center justify-center" >
-    <div class="row " style="min-width: 100%; margin: 20px; justify-content: center; ">
-     <div class="col-4 col-md-4 form-control " >
-         <q-input rounded type="password" hint="Password" filled v-model="password"  label="Nueva Contraseña" />
-       </div>
-       <div class="col-4 col-md-4 form-control">
-         <q-input rounded type="password" hint="Password" filled v-model="confirm_password"  label="Confirmar Contraseña" />
-       </div>
-      <div class="col-12 text-center q-py-md">
+    <div class="row " style="min-width: 100%; max-width: 300px; margin: 20px; justify-content: center; ">
+<q-input outlined standout="bg-gray"   type="password" hint="Password" filled v-model="password"  label="Nueva Contraseña" />
+<q-input outlined standout="bg-gray"   type="password" hint="Password" filled v-model="confirm_password"  label="Confirmar Contraseña" />
+       <div class="col-12 text-center q-py-md">
         <q-btn class="bg-grey" @click="send">Actualizar</q-btn>
       </div>
     </div>

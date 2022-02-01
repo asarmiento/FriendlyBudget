@@ -20,8 +20,7 @@
     <q-carousel-slide class="img-caraousel" :name="4" img-src="../assets/v4.0/LIMONADA1.jpg"/>
   </q-carousel>
 </div>
-
-      <div v-if="search" class="q-pa-sm  page-index-products" style="">
+      <div v-if="search" class="  page-index-products" style="">
         <div class="col-12 top-product-index"  >
           <h4 class="text-primary"> Top 15 de la semana</h4>
           <q-list bordered padding  class="justify-center text-primary">

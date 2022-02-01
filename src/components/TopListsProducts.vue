@@ -1,6 +1,6 @@
 <template>
-  <div class="row lists-products " >
-      <div ref="myListRef" class=" lists-products-page row justify-center">
+  <div class="row lists-products-top " >
+      <div ref="myListRef" class=" lists-products-page row ">
         <q-infinite-scroll  :offset="550" v-if="listsTopIndexProducts">
           <div
             v-for="product in listsTopIndexProducts.data"

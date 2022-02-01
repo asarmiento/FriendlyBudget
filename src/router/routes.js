@@ -1,4 +1,3 @@
-
 const routes = [
   {
     path: '/',
@@ -107,43 +106,43 @@ const routes = [
   },
   {
     path: '/cevezas-y-bebidas-alcoholicas',
-    meta: {
-      requiresAuth: true
-    },
     component: () => import('layouts/MainLayout.vue'),
     children: [
       {
         path: '',
         component: () => import('pages/cevezasYBebidasAlcoholicas.vue'),
-        name: 'Cervezas y Bebidas Alcoholicas'
+        name: 'Cervezas y Bebidas Alcoholicas',
+        meta: {
+          requiresAuth: true
+        }
       }
     ]
   },
   {
     path: '/mi-perfil',
-    meta: {
-      requiresAuth: true
-    },
     component: () => import('layouts/MainLayout.vue'),
     children: [
       {
         path: '',
         component: () => import('pages/users/Profile.vue'),
-        name: 'Mi perfil'
+        name: 'Mi perfil',
+        meta: {
+          requiresAuth: true
+        }
       }
     ]
   },
   {
     path: '/change-password',
-    meta: {
-      requiresAuth: true
-    },
     component: () => import('layouts/MainLayout.vue'),
     children: [
       {
         path: '',
         component: () => import('pages/users/changePassword.vue'),
-        name: 'Cambio Contraseña'
+        name: 'Cambio Contraseña',
+        meta: {
+          requiresAuth: true
+        }
       }
     ]
   },

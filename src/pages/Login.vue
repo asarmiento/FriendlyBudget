@@ -1,7 +1,6 @@
 <template>
-  <q-page  class="flex flex-center">
-    <img id="login-bg" src="../assets/bg-login.jpg" width="1444" height="850">
-    <div  class="q-pa-md shadow-5 absolute-left box-login" style=" ">
+  <q-page id="login-page" >
+    <div  class="q-pa-md shadow-5  box-login" style=" ">
       <div class="text-h2 text-center logo-bg">
         <img src="../assets/v4.0/logo-friendlyPos.png" class="responsive" />
       </div>
@@ -28,6 +27,7 @@
         </div>
       </q-form>
     </div>
+    <img id="login-bg" src="../assets/bg-login.jpg" width="1444" height="850">
     <div class="row banner-login">
       <div class=" banner-login--card ">
         Publicidad

@@ -89,6 +89,12 @@
                     <q-input rounded outlined type="number"
                              input-class="text-center"
                              bottom-slots v-model="amount">
+                      <template v-slot:prepend>
+                        <q-btn rounded color="primary" @click="decrementar">-</q-btn>
+                      </template>
+                      <template v-slot:append>
+                        <q-btn rounded color="primary" @click="incrementar">+</q-btn>
+                      </template>
                     </q-input>
                     <q-btn  icon="shopping_cart" @click="send(product)" standout color="primary"
                            label="Agregar"/>

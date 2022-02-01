@@ -15,6 +15,7 @@ import storePush from './storePush'
 export default store(function (/* { ssrContext } */) {
   const Store = createStore({
     modules: {
+      namespaced: true,
       authModules: authModules,
       storePush: storePush
     },

@@ -1,24 +1,24 @@
 <template>
     <div class="row justify-center box-product-unit">
-      <q-card class=" no-shadow col-md-4  ">
-        <q-img :src="product.url_img" class=" img-unit "   style="height: 280px; max-width: 80%" />
+      <q-card class=" no-shadow col-md-4 col-sm-12 box-product-unit__imagen">
+        <q-img :src="product.url_img" class=" img-unit "    />
       </q-card>
 
-      <div  style="width: 17%; display: flex; justify-content: right; align-items: center; margin-top: -59px; margin-right: 15px; margin-left: 5%">
-        <q-separator vertical/>
-        <div class="row " style="margin-left: 2%">
-          <q-card-section class="col-md-12 desription-product text-center">{{product.description}}</q-card-section>
+      <div  class="box-product-unit__details">
+
+        <div class="row box-product-unit__details__content" >
+          <q-card-section class="col-md-12 box-product-unit__details__content__desription-product text-center">{{product.description}}</q-card-section>
           <q-card-section class="col-md-12 text-center">
             <q-item-label style="font-size: 18px; padding: 3px"><i>Precio Caja*:</i> <strong class="price-box"> ₡{{boxMoney}}</strong></q-item-label>
             <q-item-label style="font-size: 18px; padding: 3px"><i>Precio Unitario*:</i> <strong class="price-unite"> ₡{{money}} </strong></q-item-label>
           </q-card-section>
-          <q-card-sectio class="col-md-12 text-center"  style="display: block; padding: 5px 0 4px 0;">
-            <div class=" col-md-12 text-center form-group" >
+          <q-card-section class="col-md-12 text-center box-product-unit__details__content__select"  >
+            <div class=" col-md-12 text-center form-group " >
               <q-item-label class="text-bold">SELECCIONE PRESENTACIÓN</q-item-label>
-                <q-select rounded outlined  v-model="metho" :options="options"/>
+                <q-select input-class="text-center" rounded outlined  v-model="metho" :options="options"/>
             </div>
-          </q-card-sectio>
-          <q-card-sectio class="col-md-12 text-center "  style="display: block; padding: 5px 0 4px 0">
+          </q-card-section>
+          <q-card-section class="col-md-12 text-center "  style="display: block; padding: 5px 0 4px 0">
             <div class=" col-md-12 text-center form-group">
               <q-item-label  class="text-bold">SELECCIONE CANTIDAD</q-item-label>
               <q-input rounded outlined type="number"
@@ -32,15 +32,13 @@
                 </template>
               </q-input>
             </div>
-          </q-card-sectio>
+          </q-card-section>
 
-          <q-card-sectio class="col-md-12 text-center">
-            <div class=" col-md-12 text-center form-group">
-              <q-btn rounded outlined color="primary" style="width: 100%" @click="send">
+          <q-card-section class="col-md-12 text-center box-product-unit__details__content__buttom">
+                <q-btn rounded outlined color="primary" style="width: 100%" @click="send">
                 Comprar
               </q-btn>
-            </div>
-          </q-card-sectio>
+           </q-card-section>
 
           <q-card-sectio class="col-md-12 text-center" style="margin-top: 26px">
             <div class=" col-md-12 text-center form-group">
@@ -144,8 +142,5 @@ export default defineComponent({
 })
 </script>
 <style scoped>
-  .q-img__image
-  {
-    width: 80%;
-  }
+
 </style>

@@ -97,19 +97,47 @@
       </q-tabs>
       <div class="div-breadcrumbs  text-primary q-gutter-sm">
         <q-toolbar inset>
-          <q-breadcrumbs align="left" active-color="gray" style="font-size: 14px">
+          <q-breadcrumbs class="breadroute" align="left" active-color="gray" style="font-size: 14px">
             <q-breadcrumbs-el label="Inicio" to="/inicio"/>
             <q-breadcrumbs-el  :label="this.$route.name"/>
             <q-breadcrumbs-el v-if="product && this.$route.name === 'Producto'" :label="product.product.description"/>
           </q-breadcrumbs>
-          <q-space />
-          <q-item-card>
+          <q-space  class="breadroute" />
+          <q-item-card class="breadPayment">
             Para pagos puedes realizar Sinpe Movil <strong>87479284</strong>
           </q-item-card>
         </q-toolbar>
       </div>
     </q-header>
-    <q-page-container style="padding-left:0">
+<q-header>
+  <q-tabs
+    v-model="tab"
+    inline-label
+    outside-arrows
+    mobile-arrows
+    class="bg-primary text-white shadow-2 q-py-sm"
+  >
+    <shopp-card></shopp-card>
+    <q-tab >Bienvenido: {{user.username}}</q-tab>
+    <q-tab v-if="totalesCard">SubTotal: {{formatTotal(totalesCard.subtotal)}}</q-tab>
+    <q-tab v-if="totalesCard">Total IVA: {{formatTotal(totalesCard.totalTax)}}</q-tab>
+    <q-tab v-if="totalesCard">Total: {{formatTotal(totalesCard.total)}}</q-tab>
+  </q-tabs>
+  <q-tabs inset
+    v-model="tab"
+    inline-label
+    outside-arrows
+    mobile-arrows
+    class="bg-primary text-white shadow-2"
+  >
+    <q-route-tab to="/inicio" name="home" icon="home" label="Inicio" />
+    <q-route-tab to="/alimentos" name="mails" icon="lightbulb" label="Alimentos" />
+    <q-route-tab to="/vino-y-destilados" name="alarms" icon="alarm" label="Vinos y Destilados" />
+    <q-route-tab to="/bebidas-sin-alcohol" name="movies" icon="movie" label="Bebidas Sin Licor" />
+    <q-route-tab to="/cevezas-y-bebidas-alcoholicas" name="photos" icon="photo" label="Cervezas y Bebidas Alcoholicas" />
+  </q-tabs>
+</q-header>
+    <q-page-container style="padding-left:0; min-height: 550px;">
       <q-page class="q-mx-md">
         <router-view/>
       </q-page>
@@ -133,6 +161,20 @@
         </q-item-label>
       </q-toolbar>
     </q-footer>
+
+    <q-card>
+      <q-tabs
+        v-model="tab"
+        dense
+        class="bg-grey-3"
+        align="justify"
+        narrow-indicator
+      >
+        <q-route-tab to="/mi-perfil" name="mails" label="Perfil" />
+        <q-route-tab @click="logoutUser" name="movies" label="Cerrar Sesión" />
+        <q-route-tab to="/change-password" name="alarms" label="Cambio Contraseña" />
+      </q-tabs>
+    </q-card>
   </q-layout>
 </template>
 
@@ -163,7 +205,8 @@ export default defineComponent({
       product: 'storePush/getProductGetter',
       listSelectProducts: 'storePush/listsSelectProductsGetter',
       totalesCard: 'storePush/getTotalCardGetter',
-      customer: 'authModules/CustomerGetter'
+      customer: 'authModules/CustomerGetter',
+      user: 'authModules/userName'
     })
   },
   components: { shoppCard },

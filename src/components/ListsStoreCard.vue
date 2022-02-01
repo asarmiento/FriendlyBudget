@@ -1,15 +1,47 @@
 <template>
   <q-page class="q-px-md  list-card">
-    <div class="row q-mx-lg flex justify-between">
-      <h1 class="title-card-store">Carrito de compra</h1>
-      <h1 class="title-card-store">Día de entrega de pedidos los: {{getCustomer.visit_day}}</h1>
+    <div class="row list-card__title">
+      <h1>Carrito de compra</h1>
+      <h2>Día de entrega de pedidos los: {{getCustomer.visit_day}}</h2>
       <h4>Número de pedido: {{getNumeration.consecutive}}</h4>
 
     </div>
-    <div class="row  q-mx-lg">
+    <q-card class="list-card__box-products" v-for="(product) in listsProducts" :key="product.id">
+      <q-card-section class="bg-primary text-white text-center">
+            Productos
+      </q-card-section>
+      <q-separator />
+      <q-card-section class="text-center">
+        <q-img :src="product.url_img" style="height: 100px; max-width: 100px"/>
+      </q-card-section>
+      <q-card-section class="text-center">{{product.description}}</q-card-section>
+      <q-card-section class=" list-card__box-products__buttoms-au-dow ">
+        <div class="input-group">
+            <span @click="removeUnitProduct(product)" class="input-group-addon">
+              <q-icon name="chevron_left" color="primary"></q-icon>
+            </span>
+        <input type="text" class="form-control" v-model="product.amount">
+        <span @click="addUnitProduct(product)" class="input-group-addon">
+          <q-icon name="chevron_right" color="primary" push></q-icon>
+        </span>
       </div>
-    <h5 ></h5>
-    <q-markup-table flat bordered>
+      </q-card-section>
+
+      <q-card-section class="text-center list-card__box-products__description">
+        <span class="list-card__box-products__description__span">
+          Precio Unid.: {{formatPrice(product)}}
+        </span>
+        <q-separator />
+        <span class="list-card__box-products__description__span">
+          Descuento: {{formatTotal(product.discount)}}
+        </span>
+        <q-separator />
+        <span class="list-card__box-products__description__span">
+          Total: {{formatTotal(product.total)}}
+        </span>
+      </q-card-section>
+    </q-card>
+    <q-markup-table class="list-card__table" flat bordered>
       <thead class="bg-primary text-white">
       <tr>
         <th class="text-center">Productos</th>
@@ -22,7 +54,8 @@
       </thead>
       <tbody class="bg-white text-primary">
       <tr v-if="loading">
-        <td colspan="6" class="text-center">    <q-circular-progress
+        <td colspan="6" class="text-center">
+          <q-circular-progress
           indeterminate
           size="90px"
           :thickness="0.4"
@@ -60,83 +93,83 @@
       </template>
       </tbody>
     </q-markup-table>
-    <div class="q-mt-md " style="position:relative; left: 5%;">
-      <div class="row">
-        <div class="col-2 col-md-2 col-sm-12">
-          <q-btn class="no-wrap bg-grey-2 text-primary" @click="clearListCard" push>Vaciar El carrito</q-btn>
-        </div>
-        <div class="q-mr-lg q-px-md justify-center native-mobile col-3"  style="max-width: 50%; " v-if="getCustomer.credit_limit > 0">
-          <q-list class="q-mt-md q-mr-sm shadow-7 text-primary ">
-            <h6 style="margin: 0px;"> Información de Crédito</h6>
-            <q-item   v-ripple>
-              <q-item-section no-wrap>Limite de Crédito: {{getCustomer.credit_limit}}</q-item-section>
-            </q-item>
-
-            <q-item  v-ripple>
-              <q-item-section no-wrap>Saldo Pendiente: {{getCustomer.due}}</q-item-section>
-            </q-item>
-
-            <q-item  v-ripple>
-
-              <q-item-section no-wrap>Saldo disponible: {{Number(getCustomer.credit_limit)- Number(getCustomer.due)}}</q-item-section>
-            </q-item>
-          </q-list>
-        </div>
-        <div class="col-6 col-md-6 col-sm-12 flex-center items-sm-end text-right">
-          <q-card class="no-shadow   ">
-            <q-list bordered style="font-size: 1.5em; color: #2C2B7C; font-weight: bold">
-              <q-item class="q-my-sm">
-                <q-item-section>
-                  Subtotal:
-                </q-item-section>
-
-                <q-item-section>
-                  <q-item-label v-if="totalesCard">{{formatTotal(totalesCard.subtotal)}}</q-item-label>
-                </q-item-section>
-
-              </q-item>
-              <q-item class="q-my-sm">
-                <q-item-section>
-                  Descuento:
-                </q-item-section>
-
-                <q-item-section>
-                  <q-item-label v-if="totalesCard">{{formatTotal(totalesCard.discount)}}</q-item-label>
-                </q-item-section>
-
-              </q-item>
-              <q-item class="q-my-sm">
-                <q-item-section>
-                  IVA:
-                </q-item-section>
-
-                <q-item-section>
-                  <q-item-label v-if="totalesCard">{{formatTotal(totalesCard.totalIva)}}</q-item-label>
-                </q-item-section>
-
+    <q-card-section class="q-mt-md list-card__info-total" style="">
+        <div class="row">
+          <div class=" col-md-2 col-sm-12 list-card__info-total__clear-card">
+            <q-btn class="no-wrap bg-grey-2 text-primary" @click="clearListCard" push>Vaciar El carrito</q-btn>
+          </div>
+          <div class="list-card__info-total__data-credit"   v-if="getCustomer.credit_limit > 0">
+            <q-list class="q-mt-md q-mr-sm shadow-7 text-primary ">
+              <h6 style="margin: 0px;"> Información de Crédito</h6>
+              <q-item   v-ripple>
+                <q-item-section no-wrap>Limite de Crédito: {{getCustomer.credit_limit}}</q-item-section>
               </q-item>
 
-              <q-separator/>
-              <q-item class="q-mb-sm">
-                <q-item-section class="text-right ">Total:
-                </q-item-section>
+              <q-item  v-ripple>
+                <q-item-section no-wrap>Saldo Pendiente: {{getCustomer.due}}</q-item-section>
+              </q-item>
 
-                <q-item-section class="q-mb-sm" v-if="totalesCard">
-                  {{formatTotal(totalesCard.total)}}
-                </q-item-section>
+              <q-item  v-ripple>
+
+                <q-item-section no-wrap>Saldo disponible: {{formatTotal(Number(getCustomer.credit_limit)- Number(getCustomer.due))}}</q-item-section>
               </q-item>
             </q-list>
-          </q-card>
-          <div v-if="!loading" class="col-3 col-md-3 col-sm-12 ">
-            <q-card class="no-shadow ">
-              <q-card-section dense>
-                <q-btn @click="send(listsProducts,totalesCard)" class="bg-primary no-wrap" text-color="white" push>Generar pedido</q-btn>
-              </q-card-section>
+          </div>
+          <div class="list-card__info-total__totals">
+            <q-card class="no-shadow   ">
+              <q-list bordered style="font-size: 1.5em; color: #2C2B7C; font-weight: bold">
+                <q-item class="q-my-sm">
+                  <q-item-section>
+                    Subtotal:
+                  </q-item-section>
+
+                  <q-item-section>
+                    <q-item-label v-if="totalesCard">{{formatTotal(totalesCard.subtotal)}}</q-item-label>
+                  </q-item-section>
+
+                </q-item>
+                <q-item class="q-my-sm">
+                  <q-item-section>
+                    Descuento:
+                  </q-item-section>
+
+                  <q-item-section>
+                    <q-item-label v-if="totalesCard">{{formatTotal(totalesCard.discount)}}</q-item-label>
+                  </q-item-section>
+
+                </q-item>
+                <q-item class="q-my-sm">
+                  <q-item-section>
+                    IVA:
+                  </q-item-section>
+
+                  <q-item-section>
+                    <q-item-label v-if="totalesCard">{{formatTotal(totalesCard.totalIva)}}</q-item-label>
+                  </q-item-section>
+
+                </q-item>
+
+                <q-separator/>
+                <q-item class="q-mb-sm">
+                  <q-item-section class="text-right ">Total:
+                  </q-item-section>
+
+                  <q-item-section class="q-mb-sm" v-if="totalesCard">
+                    {{formatTotal(totalesCard.total)}}
+                  </q-item-section>
+                </q-item>
+              </q-list>
             </q-card>
+            <div v-if="!loading" class="col-3 col-md-3 col-sm-12 ">
+              <q-card class="no-shadow ">
+                <q-card-section dense>
+                  <q-btn @click="send(listsProducts,totalesCard)" class="bg-primary no-wrap" text-color="white" push>Generar pedido</q-btn>
+                </q-card-section>
+              </q-card>
+            </div>
           </div>
         </div>
-      </div>
-    </div>
+    </q-card-section>
 
   </q-page>
 </template>
@@ -232,9 +265,7 @@ export default {
 }
 </script>
 <style>
-  .list-card{
-    margin-top: 45px;
-  }
+
   .q-table tbody td.text-description {
     font-size: 18px;
   }

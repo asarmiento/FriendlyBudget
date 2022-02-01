@@ -1,6 +1,6 @@
 <template>
-  <q-btn round  flat dense  icon="shopping_cart" to="/list-card" @click="updateState" size="lg" class="q-ml-md">
-    <q-badge v-if="countProducts" color="red" floating>{{countProducts.length}}</q-badge>
+  <q-btn round  flat dense  icon="shopping_cart" to="/list-card" @click="updateState" size="md" class="q-ml-md " style="height: 40px; width: 55px; padding: 5px 0 5px 0">
+    <q-badge v-if="countProducts" color="red" floating class="q-my-sm">{{countProducts.length}}</q-badge>
     <q-tooltip v-if="countProducts"
                :target="true"
                anchor="bottom left"

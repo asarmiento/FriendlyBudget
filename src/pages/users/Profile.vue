@@ -1,29 +1,31 @@
 <template>
-  <q-page class="q-gutter-md flex flex-center justify-center" >
-    <div class="row " style="min-width: 500px; margin: 20px">
-     <div class="col-4 col-md-4 form-control " >
-         <q-input rounded filled v-model="customer.card" readonly label="Cédula" />
-       </div>
-       <div class="col-4 col-md-4 form-control">
-         <q-input rounded filled v-model="customer.company_name" readonly label="Nombre" />
-       </div>
-       <div class="col-md-4 form-control">
-         <q-input rounded filled v-model="customer.fantasy_name" readonly label="Nombre de Fantasia" />
-       </div>
-       <div class="col-md-4 form-control">
-         <q-input rounded filled v-model="customer.email" readonly label="Email" />
-       </div>
-      <div class="col-md-4 form-control">
-        <q-input rounded filled v-model="customer.contact_email" readonly label="Email Contador" />
+  <div class="q-pa-md">
+    <q-page class="q-gutter-md " style="width: 100%">
+      <div class="row ">
+        <div class=" col-md-4 col-sm-12 ">
+          <q-input rounded filled v-model="customer.card" dense readonly label="Cédula"/>
+        </div>
+        <div class=" col-md-4 col-sm-12 form-control">
+          <q-input rounded filled v-model="customer.company_name" dense readonly label="Nombre"/>
+        </div>
+        <div class=" col-md-4 col-sm-12 form-control">
+          <q-input rounded filled v-model="customer.fantasy_name" dense readonly label="Nombre de Fantasia"/>
+        </div>
+        <div class=" col-md-4 col-sm-12 ">
+          <q-input rounded filled v-model="customer.email" dense readonly label="Email"/>
+        </div>
+        <div class=" col-md-4 col-sm-12  form-control">
+          <q-input rounded filled v-model="customer.contact_email" dense readonly label="Email Contador"/>
+        </div>
+        <div class=" col-md-4 col-sm-12  form-control">
+          <q-input rounded filled v-model="customer.phone" dense readonly label="Teléfono"/>
+        </div>
+        <div class=" col-md-4 col-sm-12  form-control">
+          <q-input rounded filled v-model="customer.address" dense readonly label="Dirección"/>
+        </div>
       </div>
-       <div class="col-md-4 form-control">
-         <q-input rounded filled v-model="customer.phone" readonly label="Teléfono" />
-       </div>
-       <div class="col-md-4 form-control">
-         <q-input rounded filled v-model="customer.address" readonly label="Dirección" />
-       </div>
-    </div>
-  </q-page>
+    </q-page>
+  </div>
 </template>
 
 <script>
