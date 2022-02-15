@@ -38,7 +38,7 @@ export default defineComponent({
     }
   },
   mounted () {
-    this.$store.dispatch('authModules/tryCustomerAction')
+  //  this.$store.dispatch('authModules/tryCustomerAction')
   },
   computed: {
     ...mapGetters({

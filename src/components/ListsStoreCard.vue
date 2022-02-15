@@ -1,10 +1,15 @@
 <template>
   <q-page class="q-px-md  list-card">
     <div class="row list-card__title">
-      <h1>Carrito de compra</h1>
-      <h2>Día de entrega de pedidos los: {{getCustomer.visit_day}}</h2>
-      <h4>Número de pedido: {{getNumeration.consecutive}}</h4>
+      <div class="col-md-4 col-sm-12">Carrito de compra</div>
+      <div class="col-md-4 col-sm-12" v-if="getCustomer">Día de entrega de pedidos los: {{getCustomer.visit_day}}</div>
+      <div class="col-md-4 col-sm-12">Número de pedido: {{getNumeration.consecutive}}</div>
 
+    </div>
+    <div class="row list-card__title">
+      <q-item-card class="breadPayment">
+        Para pagos puedes realizar Sinpe Movil <strong>87479284</strong>
+      </q-item-card>
     </div>
     <q-card class="list-card__box-products" v-for="(product) in listsProducts" :key="product.id">
       <q-card-section class="bg-primary text-white text-center">
@@ -71,7 +76,7 @@
           <q-img :src="product.url_img" style="height: 100px; max-width: 100px"/>
           {{product.description}}
         </td>
-        <td class="text-left flex justify-start ">
+        <td class="text-left flex justify-start styleButtonProduct ">
           <div class="input-group">
             <span @click="removeUnitProduct(product)" class="input-group-addon"><q-icon name="chevron_left"
                                                                                color="primary"></q-icon></span>
@@ -249,10 +254,11 @@ export default {
       await this.$store.dispatch('storePush/sendDataPreSale', { products: products, totals: totals })
       this.$q.notify({
         spinner: true,
-        message: this.messageResponse.message,
-        timeout: 1000
+        message: 'Se envió con éxito',
+        timeout: 2000
       })
       this.loading = false
+      this.$router.push('/inicio')
     }
   },
   setup () {
@@ -267,7 +273,7 @@ export default {
 <style>
 
   .q-table tbody td.text-description {
-    font-size: 18px;
+    font-size: 16px;
   }
   .text-red-delete{
     cursor: pointer;
@@ -282,9 +288,15 @@ export default {
     font-weight: bold;
     color: black;
   }
+  .styleButtonProduct{
+    width: 200px;
+    height: 34px;
+    padding: 5px;
+    margin: 0;
+  }
   .text-description {
     padding: 0px 6px;
-    width: 248px;
+    width: 228px;
     height: 34px;
     font-family: 'Montserrat', sans-serif;
     font-weight: bold;

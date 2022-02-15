@@ -254,11 +254,13 @@ export function sendDataPreSale (context, payload) {
     const result = response.data
     const number = Number(numeration.number) + 1
     localStorage.setItem('productsCard', [])
+    localStorage.setItem('products', [])
+    context.commit('productMuttation', { products: null })
+    context.commit('addProductMutation', { products: null })
     localStorage.setItem('numeration', JSON.stringify({ consecutive: getNumeration(user, number), number: number }))
     context.commit('messageMuttation', {
       message: result
     })
-    this.$router.push('/inicio')
   }).catch(error => {
     context.commit('messageMuttation', {
       message: error.response.data

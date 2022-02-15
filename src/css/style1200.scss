@@ -107,7 +107,9 @@
   .box-login {
     background-color: rgba(236, 236, 236, 0.79);
     width: 200px;
-    max-height: 400px;
+    height: 400px;
+    position: relative;
+    left: 1%;
     border-radius: 4%;
   }
 

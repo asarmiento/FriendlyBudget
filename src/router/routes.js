@@ -1,147 +1,100 @@
 const routes = [
   {
-    path: '/',
-    meta: {
-      requiresAuth: false
-    },
+    path: '',
     component: () => import('layouts/MainLogin.vue'),
     children: [
-      { path: '', component: () => import('pages/Login.vue') }
+      {
+        path: '/login',
+        component: () => import('pages/Login.vue'),
+        meta: {
+          isAllowBack: false
+        }
+      }
     ]
   },
   {
-    path: '/inicio',
-    meta: {
-      requiresAuth: true
-    },
-    component: () => import('layouts/MainLayout.vue'),
-    children: [
-      { path: '', component: () => import('pages/Index.vue') }
-    ]
-  },
-  {
-    path: '/alimentos',
-    meta: {
-      requiresAuth: true
-    },
+    path: '',
     component: () => import('layouts/MainLayout.vue'),
     children: [
       {
-        path: '',
+        path: '/inicio',
+        component: () => import('pages/Index.vue'),
+        name: 'inicio',
+        meta: {
+          isAllowBack: true
+        }
+      },
+      {
+        path: '/alimentos',
         component: () => import('pages/Alimentos.vue'),
-        name: 'Alimentos'
-      }
-    ]
-  },
-  {
-    path: '/resultado-busqueda:result',
-    meta: {
-      requiresAuth: true
-    },
-    component: () => import('layouts/MainLayout.vue'),
-    children: [
+        name: 'Alimentos',
+        meta: {
+          isAllowBack: true
+        }
+      },
       {
-        path: '',
+        path: '/resultado-busqueda:result',
         component: () => import('pages/resultado.vue'),
-        name: 'Resultasdos'
-      }
-    ]
-  },
-  {
-    path: '/:route/:id',
-    meta: {
-      requiresAuth: true
-    },
-    component: () => import('layouts/MainLayout.vue'),
-    children: [
+        name: 'Resultasdos',
+        meta: {
+          isAllowBack: true
+        }
+      },
       {
-        path: '',
+        path: '/:route/:id',
         component: () => import('pages/Product.vue'),
         name: 'Producto',
-        props: true
-      }
-    ]
-  },
-  {
-    path: '/vino-y-destilados',
-    meta: {
-      requiresAuth: true
-    },
-    component: () => import('layouts/MainLayout.vue'),
-    children: [
+        props: true,
+        meta: {
+          isAllowBack: true
+        }
+      },
       {
-        path: '',
+        path: '/vino-y-destilados',
         component: () => import('pages/vinoYDestilados.vue'),
-        name: 'Vinos y Destilados'
-      }
-    ]
-  },
-  {
-    path: '/list-card',
-    meta: {
-      requiresAuth: true
-    },
-    component: () => import('layouts/MainLayout.vue'),
-    children: [
+        name: 'Vinos y Destilados',
+        meta: {
+          isAllowBack: true
+        }
+      },
       {
-        path: '',
+        path: '/list-card',
         component: () => import('pages/lists-card.vue'),
-        name: 'Lista de carrito'
-      }
-    ]
-  },
-  {
-    path: '/bebidas-sin-alcohol',
-    meta: {
-      requiresAuth: true
-    },
-    component: () => import('layouts/MainLayout.vue'),
-    children: [
+        name: 'Lista de carrito',
+        meta: {
+          isAllowBack: true
+        }
+      },
       {
-        path: '',
+        path: '/bebidas-sin-alcohol',
         component: () => import('pages/bebidasSinAlcohol.vue'),
-        name: 'Bebidas Sin Alcohol'
-      }
-    ]
-  },
-  {
-    path: '/cevezas-y-bebidas-alcoholicas',
-    component: () => import('layouts/MainLayout.vue'),
-    children: [
+        name: 'Bebidas Sin Alcohol',
+        meta: {
+          isAllowBack: true
+        }
+      },
       {
-        path: '',
+        path: '/cevezas-y-bebidas-alcoholicas',
         component: () => import('pages/cevezasYBebidasAlcoholicas.vue'),
         name: 'Cervezas y Bebidas Alcoholicas',
         meta: {
-          requiresAuth: true
+          isAllowBack: true
         }
-      }
-    ]
-  },
-  {
-    path: '/mi-perfil',
-    component: () => import('layouts/MainLayout.vue'),
-    children: [
+      },
       {
-        path: '',
+        path: '/mi-perfil',
         component: () => import('pages/users/Profile.vue'),
         name: 'Mi perfil',
         meta: {
-          requiresAuth: true
+          isAllowBack: true
         }
-      }
-    ]
-  },
-  {
-    path: '/change-password',
-    component: () => import('layouts/MainLayout.vue'),
-    children: [
+      },
       {
-        path: '',
+        path: '/change-password',
         component: () => import('pages/users/changePassword.vue'),
         name: 'Cambio Contraseña',
         meta: {
-          requiresAuth: true
+          isAllowBack: true
         }
       }
     ]

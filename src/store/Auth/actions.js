@@ -1,4 +1,66 @@
 import { api } from 'boot/axios'
+import { userService } from 'src/service'
+
+export async function login (context, payload) {
+  try {
+    const endpoint = '/user/login-store'
+    const { data: { data: { response } } } = await api.post(endpoint, payload)
+    console.log(response)
+    console.log('login')
+    return response
+  } catch (error) {
+    throw new Error(error.message)
+  }
+}
+
+export function updateApi (context, response) {
+  const { url, access_token: token } = response
+  console.log(url)
+  console.log('url')
+  context.commit('loginUrl', {
+    loginUrl: `http://${url}api-web/v1/`
+  })
+  api.defaults.baseURL = `http://${url}api-web/v1/`
+  api.defaults.headers.common.Authorization = `Bearer ${token}`
+}
+
+export function setLocalStorage (context, data) {
+  const { user, numeration, access_token: token, customer, products } = data
+  const expiresIn = +data.expires_at * 1000
+  const expirationDate = new Date().getTime() + expiresIn
+
+  localStorage.setItem('numeration',
+    JSON.stringify({
+      consecutive: getNumeration(user, numeration),
+      number: numeration
+    })
+  )
+  localStorage.setItem('token', token)
+  localStorage.setItem('tokenExpiration', expirationDate)
+  localStorage.setItem('user', JSON.stringify(user))
+  localStorage.setItem('customer', JSON.stringify(customer))
+  localStorage.setItem('products', JSON.stringify(products))
+
+  const numerationUser = getNumeration(user)
+  return { expirationDate, numerationUser }
+}
+
+export function setData (context, data) {
+  console.log(data)
+  const { token, expirationDate, user, numerationUser, customer, products } = data
+  context.commit('setToken', {
+    token: token,
+    tokenExpiration: expirationDate,
+    timer: null
+  })
+  context.commit('setDataAll', {
+    user,
+    numeration: numerationUser,
+    customer,
+    products
+  })
+}
+
 export function sendSessionAction (context, payload) {
   console.log('hola mundo 2')
   const url = '/login-web'
@@ -9,7 +71,7 @@ export function sendSessionAction (context, payload) {
     console.log(api.defaults.headers.common.Authorization)
     const expiresIn = +response.data.expires_at * 1000
     const expirationDate = new Date().getTime() + expiresIn
-
+    console.log(response.data.customer)
     localStorage.setItem('numeration', JSON.stringify({ consecutive: getNumeration(response.data.user, response.data.numeration), number: response.data.numeration }))
     localStorage.setItem('token', response.data.access_token)
     localStorage.setItem('tokenExpiration', expirationDate)
@@ -38,7 +100,19 @@ export function sendSessionAction (context, payload) {
     return e
   })
 }
-
+export const getUserInfo = ({ commit }) => {
+  return new Promise((resolve, reject) => {
+    userService
+      .getUserInfo()
+      .then(data => {
+        commit('updateUserInfo', data)
+        resolve()
+      })
+      .catch(error => {
+        reject(error)
+      })
+  })
+}
 export function tryCustomerAction (context) {
   const customer = localStorage.getItem('customer')
   if (customer != null) {
@@ -78,6 +152,7 @@ export function logoutAction (context) {
   localStorage.removeItem('listsproducts')
   localStorage.removeItem('numeration')
   api.defaults.headers.common.Authorization = ''
+  api.defaults.baseURL = 'https://friendlypos.net/api-web/v1'
 }
 
 function getNumeration (customer, numeration) {

@@ -103,15 +103,11 @@
             <q-breadcrumbs-el v-if="product && this.$route.name === 'Producto'" :label="product.product.description"/>
           </q-breadcrumbs>
           <q-space  class="breadroute" />
-          <q-item-card class="breadPayment">
-            Para pagos puedes realizar Sinpe Movil <strong>87479284</strong>
-          </q-item-card>
         </q-toolbar>
       </div>
     </q-header>
 <q-header>
   <q-tabs
-    v-model="tab"
     inline-label
     outside-arrows
     mobile-arrows
@@ -137,7 +133,7 @@
     <q-route-tab to="/cevezas-y-bebidas-alcoholicas" name="photos" icon="photo" label="Cervezas y Bebidas Alcoholicas" />
   </q-tabs>
 </q-header>
-    <q-page-container style="padding-left:0; min-height: 550px;">
+    <q-page-container style="padding-left:0; min-height: 450px;">
       <q-page class="q-mx-md">
         <router-view/>
       </q-page>
@@ -186,6 +182,7 @@ const linksList = [
 import { defineComponent, ref, computed } from 'vue'
 import { useStore, mapGetters } from 'vuex'
 import shoppCard from '../components/shoppCard'
+
 export default defineComponent({
   name: 'MainLayout',
   data () {
@@ -198,7 +195,7 @@ export default defineComponent({
   },
   created () {
     this.$store.dispatch('storePush/filterSelectAllProductsActions')
-    this.$store.dispatch('authModules/tryCustomerAction')
+    // this.$store.dispatch('authModules/tryCustomerAction')
   },
   computed: {
     ...mapGetters({
@@ -231,7 +228,7 @@ export default defineComponent({
     },
     async logoutUser () {
       await this.$store.dispatch('authModules/logoutAction')
-      this.$router.push({ path: '/' })
+      this.$router.push({ path: '/login' })
     },
     formatTotal (product) {
       return parseFloat(Number(product)).toFixed(2)
@@ -240,14 +237,14 @@ export default defineComponent({
   setup () {
     const leftDrawerOpen = ref(false)
     const store = useStore()
-    const isLoggedIn = computed(() => store.getters.isAuthenticated)
+    const isLoggedIn = computed(() => store.getters['authModules/isAuthenticated'])
     const user = JSON.parse(localStorage.getItem('user'))
     if (store.getters.isAuthenticated) {
       console.log('Entro a inico')
       store.dispatch('authModules.autoLogout')
       return this.router.push({ path: '/' })
     }
-
+    console.log(isLoggedIn)
     return {
       essentialLinks: linksList,
       leftDrawerOpen,

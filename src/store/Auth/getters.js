@@ -5,6 +5,9 @@ export function isAuthenticated (state) {
 export function token (state) {
   return state.token
 }
+export function loginUrlGetters (state) {
+  return state.loginUrl
+}
 export function didAutoLogout (state) {
   return state.didAutoLogout
 }

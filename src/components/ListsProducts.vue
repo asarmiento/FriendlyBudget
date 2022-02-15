@@ -81,9 +81,12 @@
                       </div>
                       <i  class="text-center">*Precio con Iva incluido</i>
                     </template>
-                    <div v-else class="text-center price-lists">
-                      ₡ {{price(product)}}
-                    </div>
+                    <template v-else>
+                      <i  class="text-center">Exento</i>
+                      <div  class="text-center price-lists">
+                        ₡ {{price(product)}}
+                      </div>
+                    </template>
                   </q-card-section>
                   <q-card-actions class="text-center items-center justify-center ">
                     <q-input rounded outlined type="number"
@@ -117,7 +120,6 @@
                         <router-link  class="container-product-item" to=""
                                      :title="product.description">{{product.description}}
                         </router-link>
-
                       </div>
                     </div>
                   </q-card-section>
@@ -128,9 +130,12 @@
                       </div>
                       <i  class="text-center">*Precio con Iva incluido</i>
                     </template>
-                    <div v-else class="text-center price-lists">
+                    <template v-else>
+                      <i  class="text-center">Exento</i>
+                      <div  class="text-center price-lists">
                       ₡ {{price(product)}}
                     </div>
+                    </template>
                   </q-card-section>
                   <q-card-actions class="text-center items-center justify-center ">
                     <q-input rounded outlined type="number"
