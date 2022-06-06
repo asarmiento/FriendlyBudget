@@ -63,13 +63,18 @@ export default ({
           username: this.data.username,
           password: this.data.password
         })
+        console.log(this.$store.state.authModules.success)
+        if (!this.$store.state.authModules.success) {
+          this.$q.notify('Usuario o contraseña invalidos')
+          return false
+        }
         const { user, customer, products } = response
 
         await this.$store.dispatch('authModules/updateApi', response)
 
         const { expirationDate, numerationUser } = await this.$store.dispatch('authModules/setLocalStorage', response)
 
-        const data = {
+        const result = {
           token: response.access_token,
           expirationDate,
           user,
@@ -78,7 +83,7 @@ export default ({
           products
         }
 
-        this.$store.dispatch('authModules/setData', data)
+        this.$store.dispatch('authModules/setData', result)
 
         this.$router.push('/inicio')
       } catch (error) {

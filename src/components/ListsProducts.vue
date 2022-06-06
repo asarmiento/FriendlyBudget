@@ -52,8 +52,7 @@
           <div
             v-for="product in listsProducts.products"
             :key="product.id"
-            class="product-item "
-          >
+            class="product-item " >
             <div v-if="product.inventory.amount > 0">
               <q-list separator>
                 <q-slide-item>

@@ -19,3 +19,6 @@ export function setCustomer (state, payload) {
 export function setNumerationMutation (state, payload) {
   state.numeration = payload.numeration
 }
+export function setMessageError (state, payload) {
+  state.success = payload.success
+}

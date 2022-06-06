@@ -7,7 +7,7 @@
 
     </div>
     <div class="row list-card__title">
-      <q-item-card class="breadPayment">
+      <q-item-card class="breadPayment" style="display: none">
         Para pagos puedes realizar Sinpe Movil <strong>87479284</strong>
       </q-item-card>
     </div>

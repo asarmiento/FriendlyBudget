@@ -106,7 +106,7 @@
   /**  Code style de Login */
   .box-login {
     background-color: rgba(236, 236, 236, 0.79);
-    min-width: 60%;
+    width: 60%;
     max-height: 400px;
     border-radius: 4%;
   }
@@ -136,12 +136,10 @@
   }
 
   .banner-login {
-    min-height: 250px;
-    bottom: 5px;
+    height: 250px;
     width: 33%;
     z-index: 1;
     padding: 5px;
-    display: flex;
 
     &--card {
       display: flex;
@@ -149,15 +147,19 @@
       align-items: center;
       position: relative;
       background-color: rgba(143, 72, 40, 0.75);
-      min-height: 5rem;
+      height: 100px;
       width: 100%;
       border: #21BA45 1px solid;
       margin: 2px;
-      border-radius: 4%;
+      border-radius: 5%;
       color: white;
       font-size: 24px;
     }
 
+    &--img {
+      height: 100%;
+      border-radius: 5%;
+    }
     &--card:first-child {
       margin-left: 0%;
     }

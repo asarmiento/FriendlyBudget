@@ -9,7 +9,10 @@ export async function login (context, payload) {
     console.log('login')
     return response
   } catch (error) {
-    throw new Error(error.message)
+    context.commit('setMessageError', {
+      success: false
+    })
+    // throw new Error(error.message)
   }
 }
 

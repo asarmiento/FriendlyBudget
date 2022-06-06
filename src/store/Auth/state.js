@@ -6,6 +6,7 @@ export default function () {
     timer: null,
     customer: null,
     numeration: null,
-    user: null
+    user: null,
+    success: true
   }
 }
