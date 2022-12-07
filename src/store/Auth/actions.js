@@ -5,7 +5,7 @@ export async function login (context, payload) {
   try {
     const endpoint = '/user/login-store'
     const { data: { data: { response } } } = await api.post(endpoint, payload)
-    console.log(response)
+    console.log(response, '--')
     console.log('login')
     return response
   } catch (error) {
@@ -17,8 +17,8 @@ export async function login (context, payload) {
 }
 
 export function updateApi (context, response) {
-  const { url, access_token: token } = response
-  console.log(url)
+  const { url, token } = response
+  console.log(url, '---')
   console.log('url')
   context.commit('loginUrl', {
     loginUrl: `http://${url}api-web/v1/`
